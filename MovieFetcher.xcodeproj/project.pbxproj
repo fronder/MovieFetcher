@@ -33,9 +33,25 @@
 		9F5C2E4D2F2CF0BD0099EABC /* Exceptions for "MovieFetcher" folder in "MovieFetcher" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Resources/Info.plist,
 			);
 			target = 9F5C2E212F2CF0BB0099EABC /* MovieFetcher */;
+		};
+		9F5C2E622F2CF2470099EABC /* Exceptions for "MovieFetcher" folder in "MovieFetcherTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Presentation/Views/MFMovieDetailViewController.swift,
+				Presentation/Views/MFMovieSearchViewController.swift,
+			);
+			target = 9F5C2E3A2F2CF0BD0099EABC /* MovieFetcherTests */;
+		};
+		9F5C2E632F2CF2470099EABC /* Exceptions for "MovieFetcher" folder in "MovieFetcherUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Presentation/Views/MFMovieDetailViewController.swift,
+				Presentation/Views/MFMovieSearchViewController.swift,
+			);
+			target = 9F5C2E442F2CF0BD0099EABC /* MovieFetcherUITests */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -44,6 +60,8 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				9F5C2E4D2F2CF0BD0099EABC /* Exceptions for "MovieFetcher" folder in "MovieFetcher" target */,
+				9F5C2E622F2CF2470099EABC /* Exceptions for "MovieFetcher" folder in "MovieFetcherTests" target */,
+				9F5C2E632F2CF2470099EABC /* Exceptions for "MovieFetcher" folder in "MovieFetcherUITests" target */,
 			);
 			path = MovieFetcher;
 			sourceTree = "<group>";
@@ -183,6 +201,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				CLASSPREFIX = MF;
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
@@ -290,7 +309,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MovieFetcher/Info.plist;
+				INFOPLIST_FILE = MovieFetcher/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -321,7 +340,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MovieFetcher/Info.plist;
+				INFOPLIST_FILE = MovieFetcher/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
