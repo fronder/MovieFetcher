@@ -6,7 +6,14 @@
 //
 
 import Foundation
+import Combine
 
-final class MovieSearchViewModel {
+final class MovieSearchViewModel: ObservableObject {
+    @Published var movies: [Movie] = []
     
+    private let searchMoviesUseCase: SearchMoviesUseCaseProtocol
+    
+    init(searchMoviesUseCase: SearchMoviesUseCaseProtocol) {
+        self.searchMoviesUseCase = searchMoviesUseCase
+    }
 }

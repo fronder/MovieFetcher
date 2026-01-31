@@ -41,8 +41,16 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Application/DependencyContainer.swift,
+				Data/Network/APIConfiguration.swift,
+				Data/Network/NetworkError.swift,
+				Data/Network/NetworkService.swift,
+				Data/Repositories/MovieRepository.swift,
 				Domain/Entities/ImageData.swift,
+				Domain/Entities/Movie.swift,
+				Domain/Entities/MovieSearchResult.swift,
 				Domain/Interfaces/ImageLoaderProtocol.swift,
+				Domain/Interfaces/MovieRepositoryProtocol.swift,
+				Domain/UseCases/SearchMoviesUseCase.swift,
 				Presentation/Adapters/ImageDataAdapter.swift,
 				Presentation/Coordinators/AppCoordinator.swift,
 				Presentation/Coordinators/Coordinator.swift,
@@ -58,8 +66,16 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Application/DependencyContainer.swift,
+				Data/Network/APIConfiguration.swift,
+				Data/Network/NetworkError.swift,
+				Data/Network/NetworkService.swift,
+				Data/Repositories/MovieRepository.swift,
 				Domain/Entities/ImageData.swift,
+				Domain/Entities/Movie.swift,
+				Domain/Entities/MovieSearchResult.swift,
 				Domain/Interfaces/ImageLoaderProtocol.swift,
+				Domain/Interfaces/MovieRepositoryProtocol.swift,
+				Domain/UseCases/SearchMoviesUseCase.swift,
 				Presentation/Adapters/ImageDataAdapter.swift,
 				Presentation/Coordinators/AppCoordinator.swift,
 				Presentation/Coordinators/Coordinator.swift,

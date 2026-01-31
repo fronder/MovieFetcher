@@ -23,7 +23,7 @@ final class AppCoordinator: Coordinator {
     }
     
     private func showMovieSearch() {
-        let viewModel = MovieSearchViewModel()
+        let viewModel = MovieSearchViewModel(searchMoviesUseCase: dependencyContainer.makeSearchMoviesUseCase())
         
         let viewController = MovieSearchViewController(viewModel: viewModel)
                 
