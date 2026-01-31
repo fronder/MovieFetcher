@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import Combine
 
 final class MovieSearchViewController: UIViewController {
     private let viewModel: MovieSearchViewModel
+    private var cancellables = Set<AnyCancellable>()
     
     private let searchController: UISearchController = {
         let controller = UISearchController(searchResultsController: nil)
@@ -40,7 +42,18 @@ final class MovieSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        bindViewModel()
     }
+    
+    private func bindViewModel() {
+        viewModel.$movies
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] movies in
+                self?.tableView.reloadData()
+            }
+            .store(in: &cancellables)
+    }
+
     
     private func setupUI() {
         title = "Movies"
@@ -63,11 +76,14 @@ final class MovieSearchViewController: UIViewController {
 
 extension MovieSearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return viewModel.movies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.identifier, for: indexPath) as? MovieTableViewCell else { return UITableViewCell() }
+        
+        let movie = viewModel.movies[indexPath.row]
+        cell.configure(with: movie, imageLoader: ImageLoader.shared)
         
         return cell
     }
@@ -81,6 +97,6 @@ extension MovieSearchViewController: UITableViewDelegate {
 
 extension MovieSearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
+        viewModel.searchQuery = searchText
     }
 }

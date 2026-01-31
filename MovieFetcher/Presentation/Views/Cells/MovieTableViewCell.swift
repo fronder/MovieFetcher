@@ -39,6 +39,12 @@ final class MovieTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configure(with movie: Movie, imageLoader: ImageLoaderProtocol) {
+        titleLabel.text = movie.title
+        releaseDateLabel.text = movie.formattedReleaseDate        
+        posterImageView.loadImage(from: movie.posterURL, imageLoader: imageLoader)
+    }
+    
     private func setupUI() {
         posterImageView.translatesAutoresizingMaskIntoConstraints = false
         posterImageView.layer.cornerRadius = 8
