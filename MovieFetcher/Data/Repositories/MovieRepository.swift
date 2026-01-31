@@ -9,9 +9,11 @@ import Foundation
 
 final class MovieRepository: MovieRepositoryProtocol {
     private let networkService: NetworkServiceProtocol
+    private let cache: MovieCacheProtocol
     
-    init(networkService: NetworkServiceProtocol) {
+    init(networkService: NetworkServiceProtocol, cache: MovieCacheProtocol) {
         self.networkService = networkService
+        self.cache = cache
     }
     
     func searchMovies(query: String, page: Int) async throws -> MovieSearchResult {
@@ -19,6 +21,11 @@ final class MovieRepository: MovieRepositoryProtocol {
             endpoint: .searchMovies(query: query, page: page)
         )
         
+        cacheMovies(result: result, query: query)
         return result
+    }
+    
+    func cacheMovies(result: MovieSearchResult, query: String) {
+        cache.cacheMovies(result.results, query: query)
     }
 }

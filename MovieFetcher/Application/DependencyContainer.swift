@@ -10,10 +10,15 @@ import Foundation
 final class DependencyContainer {
     private let networkService: NetworkServiceProtocol
     private let movieRepository: MovieRepositoryProtocol
+    private let cache: MovieCacheProtocol
     
     init() {
         self.networkService = NetworkService()
-        self.movieRepository = MovieRepository(networkService: networkService)
+        self.cache = CoreDataMovieCache(coreDataManager: CoreDataManager.shared)
+        self.movieRepository = MovieRepository(
+            networkService: networkService,
+            cache: cache
+        )
     }
     
     func makeSearchMoviesUseCase() -> SearchMoviesUseCaseProtocol {
