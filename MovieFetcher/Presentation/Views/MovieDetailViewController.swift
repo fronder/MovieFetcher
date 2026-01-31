@@ -1,5 +1,5 @@
 //
-//  MFMovieSearchViewController.swift
+//  MovieDetailViewController.swift
 //  MovieFetcher
 //
 //  Created by Hasan Abdullah on 30/01/26.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MFMovieSearchViewController: UIViewController {
+final class MovieDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

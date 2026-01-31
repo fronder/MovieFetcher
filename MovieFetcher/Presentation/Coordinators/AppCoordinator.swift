@@ -19,6 +19,14 @@ final class AppCoordinator: Coordinator {
     }
 
     func start() {
+        showMovieSearch()
+    }
+    
+    private func showMovieSearch() {
+        let viewModel = MovieSearchViewModel()
         
+        let viewController = MovieSearchViewController(viewModel: viewModel)
+                
+        navigationController.pushViewController(viewController, animated: false)
     }
 }

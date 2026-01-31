@@ -41,11 +41,16 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Application/DependencyContainer.swift,
+				Domain/Entities/ImageData.swift,
+				Domain/Interfaces/ImageLoaderProtocol.swift,
+				Presentation/Adapters/ImageDataAdapter.swift,
 				Presentation/Coordinators/AppCoordinator.swift,
 				Presentation/Coordinators/Coordinator.swift,
 				Presentation/ViewModels/MovieSearchViewModel.swift,
-				Presentation/Views/MFMovieDetailViewController.swift,
-				Presentation/Views/MFMovieSearchViewController.swift,
+				Presentation/Views/Cells/MovieTableViewCell.swift,
+				Presentation/Views/Components/AsyncImageView.swift,
+				Presentation/Views/MovieDetailViewController.swift,
+				Presentation/Views/MovieSearchViewController.swift,
 			);
 			target = 9F5C2E3A2F2CF0BD0099EABC /* MovieFetcherTests */;
 		};
@@ -53,11 +58,16 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Application/DependencyContainer.swift,
+				Domain/Entities/ImageData.swift,
+				Domain/Interfaces/ImageLoaderProtocol.swift,
+				Presentation/Adapters/ImageDataAdapter.swift,
 				Presentation/Coordinators/AppCoordinator.swift,
 				Presentation/Coordinators/Coordinator.swift,
 				Presentation/ViewModels/MovieSearchViewModel.swift,
-				Presentation/Views/MFMovieDetailViewController.swift,
-				Presentation/Views/MFMovieSearchViewController.swift,
+				Presentation/Views/Cells/MovieTableViewCell.swift,
+				Presentation/Views/Components/AsyncImageView.swift,
+				Presentation/Views/MovieDetailViewController.swift,
+				Presentation/Views/MovieSearchViewController.swift,
 			);
 			target = 9F5C2E442F2CF0BD0099EABC /* MovieFetcherUITests */;
 		};
@@ -209,7 +219,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				CLASSPREFIX = MF;
+				CLASSPREFIX = "";
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
