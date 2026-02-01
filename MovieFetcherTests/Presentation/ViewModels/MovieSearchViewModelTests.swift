@@ -46,4 +46,13 @@ final class MovieSearchViewModelTests: XCTestCase {
         
         XCTAssertEqual(mockSearchUseCase.executeCallCount, 0)
     }
+    
+    func testSearchMovies_WhenError_SetsErrorMessage() async {
+        mockSearchUseCase.shouldThrowError = true
+        
+        await sut.searchMovies(query: "test", resetResults: true)
+        
+        XCTAssertNotNil(sut.errorMessage)
+        XCTAssertFalse(sut.isLoading)
+    }
 }
