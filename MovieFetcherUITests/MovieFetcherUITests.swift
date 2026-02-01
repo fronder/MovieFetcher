@@ -46,4 +46,9 @@ final class MovieFetcherUITests: XCTestCase {
         let exists = table.waitForExistence(timeout: 5)
         XCTAssertTrue(exists)
     }
+    
+    func testEmptyStateDisplayed() {
+        let emptyStateLabel = app.staticTexts["Search for movies"]
+        XCTAssertTrue(emptyStateLabel.exists)
+    }
 }
