@@ -128,6 +128,10 @@ extension MovieSearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.searchQuery = searchText
     }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        viewModel.searchQuery = ""
+    }
 }
 
 extension MovieSearchViewController {
