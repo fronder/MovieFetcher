@@ -55,4 +55,15 @@ final class MovieSearchViewModelTests: XCTestCase {
         XCTAssertNotNil(sut.errorMessage)
         XCTAssertFalse(sut.isLoading)
     }
+    
+    func testLoadMoreMovies_WhenHasMorePages_LoadsNextPage() async {
+        mockSearchUseCase.result = MockData.searchResult
+        
+        await sut.searchMovies(query: "test", resetResults: true)
+        sut.hasMorePages = true
+        await sut.loadMoreMovies()
+        
+        XCTAssertEqual(mockSearchUseCase.executeCallCount, 2)
+    }
+
 }
