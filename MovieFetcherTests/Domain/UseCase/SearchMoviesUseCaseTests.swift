@@ -55,4 +55,19 @@ final class SearchMoviesUseCaseTests: XCTestCase {
         XCTAssertEqual(mockRepository.searchMoviesCallCount, 1)
         XCTAssertEqual(mockRepository.cacheMoviesCallCount, 1)
     }
+    
+    func testExecute_WhenResponseFailsAndCacheExists_ReturnsCachedResult() async throws {
+        let expectedResult = MovieSearchResult(
+            page: 1,
+            results: [MockData.movie],
+            totalPages: 1,
+            totalResults: 1
+        )
+        mockRepository.cachedResult = expectedResult
+        mockRepository.shouldThrowError = true
+        
+        let result = try await sut.execute(query: "test", page: 1)
+        
+        XCTAssertEqual(result, expectedResult)
+    }
 }
