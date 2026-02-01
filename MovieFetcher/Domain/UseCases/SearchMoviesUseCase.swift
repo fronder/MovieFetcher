@@ -25,6 +25,7 @@ final class SearchMoviesUseCase: SearchMoviesUseCaseProtocol {
         
         do {
             let result = try await repository.searchMovies(query: query, page: page)
+            repository.cacheMovies(result: result, query: query)
             return result
         } catch {
             if let cachedResult = repository.getCachedMovies(query: query, page: page) {

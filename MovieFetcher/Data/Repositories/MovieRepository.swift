@@ -21,7 +21,6 @@ final class MovieRepository: MovieRepositoryProtocol {
             endpoint: .searchMovies(query: query, page: page)
         )
         
-        cacheMovies(result: result, query: query)
         return result
     }
     

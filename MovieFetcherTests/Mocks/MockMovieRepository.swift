@@ -15,6 +15,7 @@ final class MockMovieRepository: MovieRepositoryProtocol {
     
     var searchMoviesCallCount = 0
     var getCachedMoviesCallCount = 0
+    var cacheMoviesCallCount = 0
     
     func searchMovies(query: String, page: Int) async throws -> MovieSearchResult {
         searchMoviesCallCount += 1
@@ -33,5 +34,9 @@ final class MockMovieRepository: MovieRepositoryProtocol {
     func getCachedMovies(query: String, page: Int) -> MovieSearchResult? {
         getCachedMoviesCallCount += 1
         return cachedResult
+    }
+    
+    func cacheMovies(result: MovieSearchResult, query: String) {
+        cacheMoviesCallCount += 1
     }
 }
