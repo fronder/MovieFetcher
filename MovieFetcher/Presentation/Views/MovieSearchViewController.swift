@@ -47,6 +47,8 @@ final class MovieSearchViewController: UIViewController {
         return label
     }()
     
+    var onMovieTap: ((Movie) -> Void)?
+    
     init(viewModel: MovieSearchViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -120,7 +122,9 @@ extension MovieSearchViewController: UITableViewDataSource {
 
 extension MovieSearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        tableView.deselectRow(at: indexPath, animated: true)
+        let movie = viewModel.movies[indexPath.row]
+        onMovieTap?(movie)
     }
 }
 

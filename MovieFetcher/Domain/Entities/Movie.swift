@@ -23,6 +23,11 @@ struct Movie: Equatable, Codable, Hashable {
         return URL(string: "https://image.tmdb.org/t/p/w500\(posterPath)")
     }
     
+    var backdropURL: URL? {
+        guard let backdropPath = backdropPath else { return nil }
+        return URL(string: "https://image.tmdb.org/t/p/w780\(backdropPath)")
+    }
+    
     var formattedReleaseDate: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"

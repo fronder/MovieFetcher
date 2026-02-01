@@ -26,7 +26,19 @@ final class AppCoordinator: Coordinator {
         let viewModel = MovieSearchViewModel(searchMoviesUseCase: dependencyContainer.makeSearchMoviesUseCase())
         
         let viewController = MovieSearchViewController(viewModel: viewModel)
+        viewController.onMovieTap = { [weak self] movie in
+            self?.showMovieDetail(movie: movie)
+        }
                 
         navigationController.pushViewController(viewController, animated: false)
+    }
+    
+    private func showMovieDetail(movie: Movie) {
+        let viewModel = MovieDetailViewModel(
+            movie: movie
+        )
+        
+        let viewController = MovieDetailViewController(viewModel: viewModel)
+        navigationController.pushViewController(viewController, animated: true)
     }
 }
