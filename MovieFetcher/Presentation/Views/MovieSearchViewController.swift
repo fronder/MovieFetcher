@@ -37,6 +37,16 @@ final class MovieSearchViewController: UIViewController {
         return indicator
     }()
     
+    private let emptyStateLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Search for movies"
+        label.textAlignment = .center
+        label.textColor = .secondaryLabel
+        label.font = .systemFont(ofSize: 18, weight: .medium)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     init(viewModel: MovieSearchViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -57,6 +67,7 @@ final class MovieSearchViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] movies in
                 self?.tableView.reloadData()
+                self?.emptyStateLabel.isHidden = !movies.isEmpty || self?.viewModel.isLoading == true
             }
             .store(in: &cancellables)
         
@@ -70,29 +81,6 @@ final class MovieSearchViewController: UIViewController {
                 }
             }
             .store(in: &cancellables)
-    }
-
-    
-    private func setupUI() {
-        title = "Movies"
-        view.backgroundColor = .systemBackground
-        
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-        searchController.searchBar.delegate = self
-        
-        view.addSubview(tableView)
-        view.addSubview(loadingIndicator)
-        
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        ])
     }
 }
 
@@ -120,5 +108,33 @@ extension MovieSearchViewController: UITableViewDelegate {
 extension MovieSearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.searchQuery = searchText
+    }
+}
+
+extension MovieSearchViewController {
+    private func setupUI() {
+        title = "Movies"
+        view.backgroundColor = .systemBackground
+        
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.searchBar.delegate = self
+        
+        view.addSubview(tableView)
+        view.addSubview(loadingIndicator)
+        view.addSubview(emptyStateLabel)
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            emptyStateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyStateLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
 }
