@@ -24,4 +24,9 @@ final class MovieFetcherUITests: XCTestCase {
         let searchBar = app.searchFields.firstMatch
         XCTAssertTrue(searchBar.exists)
     }
+    
+    func testNavigationTitleExists() {
+        let navigationBar = app.navigationBars["Movies"]
+        XCTAssertTrue(navigationBar.exists)
+    }
 }
