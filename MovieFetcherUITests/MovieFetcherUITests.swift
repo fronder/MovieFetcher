@@ -51,4 +51,21 @@ final class MovieFetcherUITests: XCTestCase {
         let emptyStateLabel = app.staticTexts["Search for movies"]
         XCTAssertTrue(emptyStateLabel.exists)
     }
+    
+    func testMovieSelectionNavigatesToDetail() {
+        let searchBar = app.searchFields.firstMatch
+        searchBar.tap()
+        searchBar.typeText("Inception")
+        
+        let table = app.tables.firstMatch
+        _ = table.waitForExistence(timeout: 5)
+        
+        let firstCell = table.cells.firstMatch
+        if firstCell.waitForExistence(timeout: 5) {
+            firstCell.tap()
+            
+            let backButton = app.navigationBars.buttons.firstMatch
+            XCTAssertTrue(backButton.exists)
+        }
+    }
 }
