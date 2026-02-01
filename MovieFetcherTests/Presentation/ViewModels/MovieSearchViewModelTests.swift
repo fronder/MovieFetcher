@@ -40,4 +40,10 @@ final class MovieSearchViewModelTests: XCTestCase {
         XCTAssertFalse(sut.isLoading)
         XCTAssertNil(sut.errorMessage)
     }
+    
+    func testSearchMovies_WhenQueryIsEmpty_DoesNotSearch() async {
+        await sut.searchMovies(query: "", resetResults: true)
+        
+        XCTAssertEqual(mockSearchUseCase.executeCallCount, 0)
+    }
 }
