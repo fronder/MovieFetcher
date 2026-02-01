@@ -13,6 +13,11 @@ final class MovieSearchViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var searchQuery = ""
     @Published var errorMessage: String?
+    @Published var hasMorePages = true
+    
+    private var currentPage = 1
+    private var totalPages = 1
+    private var currentSearchQuery = ""
     
     private let searchMoviesUseCase: SearchMoviesUseCaseProtocol
     
@@ -25,7 +30,6 @@ final class MovieSearchViewModel: ObservableObject {
         setupSearchDebounce()
     }
     
-    
     private func setupSearchDebounce() {
         $searchQuery
             .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
@@ -37,15 +41,21 @@ final class MovieSearchViewModel: ObservableObject {
                     self.errorMessage = nil
                 } else {
                     Task {
-                        await self.searchMovies(query: query)
+                        await self.searchMovies(query: query, resetResults: true)
                     }
                 }
             }
             .store(in: &cancellables)
     }
     
-    func searchMovies(query: String) async {
+    func searchMovies(query: String, resetResults: Bool = false) async {
         searchTask?.cancel()
+        
+        if resetResults {
+            currentPage = 1
+            movies = []
+            currentSearchQuery = query
+        }
         
         guard !query.isEmpty else { return }
         
@@ -54,10 +64,16 @@ final class MovieSearchViewModel: ObservableObject {
         
         searchTask = Task {
             do {
-                let result = try await searchMoviesUseCase.execute(query: query, page: 1)
+                let result = try await searchMoviesUseCase.execute(query: query, page: currentPage)
                 
                 if !Task.isCancelled {
-                    movies = result.results
+                    if resetResults {
+                        movies = result.results
+                    } else {
+                        movies.append(contentsOf: result.results)
+                    }
+                    totalPages = result.totalPages
+                    hasMorePages = currentPage < totalPages
                     isLoading = false
                 }
             } catch {
@@ -69,5 +85,12 @@ final class MovieSearchViewModel: ObservableObject {
         }
         
         await searchTask?.value
+    }
+    
+    func loadMoreMovies() async {
+        guard !isLoading, hasMorePages, !currentSearchQuery.isEmpty else { return }
+        
+        currentPage += 1
+        await searchMovies(query: currentSearchQuery, resetResults: false)
     }
 }

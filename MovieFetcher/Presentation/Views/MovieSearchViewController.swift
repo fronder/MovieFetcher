@@ -126,6 +126,15 @@ extension MovieSearchViewController: UITableViewDelegate {
         let movie = viewModel.movies[indexPath.row]
         onMovieTap?(movie)
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let lastIndex = viewModel.movies.count - 1
+        if indexPath.row == lastIndex && viewModel.hasMorePages {
+            Task {
+                await viewModel.loadMoreMovies()
+            }
+        }
+    }
 }
 
 extension MovieSearchViewController: UISearchBarDelegate {
