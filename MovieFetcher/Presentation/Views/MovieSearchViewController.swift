@@ -81,6 +81,25 @@ final class MovieSearchViewController: UIViewController {
                 }
             }
             .store(in: &cancellables)
+        
+        viewModel.$errorMessage
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorMessage in
+                if let error = errorMessage {
+                    self?.showError(error)
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func showError(_ message: String) {
+        let alert = UIAlertController(
+            title: "Error",
+            message: message,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 }
 

@@ -12,6 +12,7 @@ final class MovieSearchViewModel: ObservableObject {
     @Published var movies: [Movie] = []
     @Published var isLoading = false
     @Published var searchQuery = ""
+    @Published var errorMessage: String?
     
     private let searchMoviesUseCase: SearchMoviesUseCaseProtocol
     
@@ -33,6 +34,7 @@ final class MovieSearchViewModel: ObservableObject {
                 guard let self = self else { return }
                 if query.isEmpty {
                     self.movies = []
+                    self.errorMessage = nil
                 } else {
                     Task {
                         await self.searchMovies(query: query)
@@ -48,6 +50,7 @@ final class MovieSearchViewModel: ObservableObject {
         guard !query.isEmpty else { return }
         
         isLoading = true
+        errorMessage = nil
         
         searchTask = Task {
             do {
@@ -59,6 +62,7 @@ final class MovieSearchViewModel: ObservableObject {
                 }
             } catch {
                 if !Task.isCancelled {
+                    errorMessage = error.localizedDescription
                     isLoading = false
                 }
             }
