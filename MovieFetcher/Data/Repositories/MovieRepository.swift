@@ -26,6 +26,6 @@ final class MovieRepository: MovieRepositoryProtocol {
     }
     
     func cacheMovies(result: MovieSearchResult, query: String) {
-        cache.cacheMovies(result.results, query: query)
+        cache.cacheMovies(result.results, query: query, page: result.page)
     }
 }

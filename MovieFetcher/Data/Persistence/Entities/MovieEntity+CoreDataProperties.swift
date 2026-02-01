@@ -27,6 +27,9 @@ extension MovieEntity {
     @NSManaged public var voteAverage: Double
     @NSManaged public var voteCount: Int64
     @NSManaged public var popularity: Double
+    @NSManaged public var searchQuery: String?
+    @NSManaged public var cachedDate: Date?
+    @NSManaged public var page: Int64
 
     func toMovie() -> Movie {
         return Movie(
