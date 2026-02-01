@@ -34,4 +34,16 @@ final class MovieFetcherUITests: XCTestCase {
         let table = app.tables.firstMatch
         XCTAssertTrue(table.exists)
     }
+    
+    func testSearchFunctionality() {
+        let searchBar = app.searchFields.firstMatch
+        XCTAssertTrue(searchBar.exists)
+        
+        searchBar.tap()
+        searchBar.typeText("Inception")
+        
+        let table = app.tables.firstMatch
+        let exists = table.waitForExistence(timeout: 5)
+        XCTAssertTrue(exists)
+    }
 }
