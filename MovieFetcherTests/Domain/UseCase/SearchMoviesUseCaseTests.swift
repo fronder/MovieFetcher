@@ -70,4 +70,15 @@ final class SearchMoviesUseCaseTests: XCTestCase {
         
         XCTAssertEqual(result, expectedResult)
     }
+    
+    func testExecute_WhenResponseFailsAndNoCacheExists_ThrowsError() async {
+        mockRepository.shouldThrowError = true
+        
+        do {
+            _ = try await sut.execute(query: "test", page: 1)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertNotNil(error)
+        }
+    }
 }
