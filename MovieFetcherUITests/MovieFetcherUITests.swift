@@ -29,4 +29,9 @@ final class MovieFetcherUITests: XCTestCase {
         let navigationBar = app.navigationBars["Movies"]
         XCTAssertTrue(navigationBar.exists)
     }
+    
+    func testTableViewExists() {
+        let table = app.tables.firstMatch
+        XCTAssertTrue(table.exists)
+    }
 }
