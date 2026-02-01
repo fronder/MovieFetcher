@@ -1,0 +1,43 @@
+//
+//  MovieSearchViewModelTests.swift
+//  MovieFetcherTests
+//
+//  Created by Hasan Abdullah on 01/02/26.
+//
+
+import XCTest
+import Combine
+@testable import MovieFetcher
+
+final class MovieSearchViewModelTests: XCTestCase {
+    var sut: MovieSearchViewModel!
+    var mockSearchUseCase: MockSearchMoviesUseCase!
+    var cancellables: Set<AnyCancellable>!
+
+    override func setUp() {
+        super.setUp()
+        mockSearchUseCase = MockSearchMoviesUseCase()
+        cancellables = Set<AnyCancellable>()
+        
+        sut = MovieSearchViewModel(
+            searchMoviesUseCase: mockSearchUseCase
+        )
+    }
+    
+    override func tearDown() {
+        sut = nil
+        mockSearchUseCase = nil
+        cancellables = nil
+        super.tearDown()
+    }
+    
+    func testSearchMovies_WhenQueryIsValid_UpdatesMovies() async {
+        mockSearchUseCase.result = MockData.searchResult
+        
+        await sut.searchMovies(query: "test", resetResults: true)
+        
+        XCTAssertEqual(sut.movies.count, 2)
+        XCTAssertFalse(sut.isLoading)
+        XCTAssertNil(sut.errorMessage)
+    }
+}

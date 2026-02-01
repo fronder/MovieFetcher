@@ -40,12 +40,11 @@
 		9F5C2E622F2CF2470099EABC /* Exceptions for "MovieFetcher" folder in "MovieFetcherTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Application/DependencyContainer.swift,
 				Data/Network/APIConfiguration.swift,
 				Data/Network/NetworkError.swift,
 				Data/Network/NetworkService.swift,
-				Data/Persistence/Cache/CoreDataMovieCache.swift,
 				Data/Persistence/Cache/Manager/CoreDataManager.swift,
+				"Data/Persistence/Entities/MovieEntity+CoreDataClass.swift",
 				Data/Repositories/MovieRepository.swift,
 				Data/Services/ImageLoader.swift,
 				Domain/Entities/ImageData.swift,
@@ -56,7 +55,6 @@
 				Domain/Interfaces/MovieRepositoryProtocol.swift,
 				Domain/UseCases/SearchMoviesUseCase.swift,
 				Presentation/Adapters/ImageDataAdapter.swift,
-				Presentation/Coordinators/AppCoordinator.swift,
 				Presentation/Coordinators/Coordinator.swift,
 				Presentation/ViewModels/MovieDetailViewModel.swift,
 				Presentation/ViewModels/MovieSearchViewModel.swift,
@@ -64,17 +62,16 @@
 				Presentation/Views/Components/AsyncImageView.swift,
 				Presentation/Views/MovieDetailViewController.swift,
 				Presentation/Views/MovieSearchViewController.swift,
+				Resources/MovieFetcher.xcdatamodeld,
 			);
 			target = 9F5C2E3A2F2CF0BD0099EABC /* MovieFetcherTests */;
 		};
 		9F5C2E632F2CF2470099EABC /* Exceptions for "MovieFetcher" folder in "MovieFetcherUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Application/DependencyContainer.swift,
 				Data/Network/APIConfiguration.swift,
 				Data/Network/NetworkError.swift,
 				Data/Network/NetworkService.swift,
-				Data/Persistence/Cache/CoreDataMovieCache.swift,
 				Data/Persistence/Cache/Manager/CoreDataManager.swift,
 				Data/Repositories/MovieRepository.swift,
 				Data/Services/ImageLoader.swift,
@@ -86,7 +83,6 @@
 				Domain/Interfaces/MovieRepositoryProtocol.swift,
 				Domain/UseCases/SearchMoviesUseCase.swift,
 				Presentation/Adapters/ImageDataAdapter.swift,
-				Presentation/Coordinators/AppCoordinator.swift,
 				Presentation/Coordinators/Coordinator.swift,
 				Presentation/ViewModels/MovieDetailViewModel.swift,
 				Presentation/ViewModels/MovieSearchViewModel.swift,
@@ -94,6 +90,7 @@
 				Presentation/Views/Components/AsyncImageView.swift,
 				Presentation/Views/MovieDetailViewController.swift,
 				Presentation/Views/MovieSearchViewController.swift,
+				Resources/MovieFetcher.xcdatamodeld,
 			);
 			target = 9F5C2E442F2CF0BD0099EABC /* MovieFetcherUITests */;
 		};
