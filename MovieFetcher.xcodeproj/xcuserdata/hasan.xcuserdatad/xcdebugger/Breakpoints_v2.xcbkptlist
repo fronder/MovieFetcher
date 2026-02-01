@@ -3,4 +3,100 @@
    uuid = "D2F9263F-1C6E-4F6D-B519-FE561E17F714"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9C649E28-4A5E-49D4-9A32-5585E9BD7084"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MovieFetcher/Domain/UseCases/SearchMoviesUseCase.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "execute(query:page:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9C649E28-4A5E-49D4-9A32-5585E9BD7084 - 59ae9b74a4376681"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for MovieFetcher.SearchMoviesUseCase.execute(query: Swift.String, page: Swift.Int) async throws -&gt; MovieFetcher.MovieSearchResult"
+                  moduleName = "MovieFetcher.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hasan/Desktop/MovieFetcher/MovieFetcher/Domain/UseCases/SearchMoviesUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30">
+               </Location>
+               <Location
+                  uuid = "9C649E28-4A5E-49D4-9A32-5585E9BD7084 - 59ae9b74a4376681"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for MovieFetcher.SearchMoviesUseCase.execute(query: Swift.String, page: Swift.Int) async throws -&gt; MovieFetcher.MovieSearchResult"
+                  moduleName = "MovieFetcher.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hasan/Desktop/MovieFetcher/MovieFetcher/Domain/UseCases/SearchMoviesUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DF46A7E3-E3AA-4BD3-BB91-E1EC8F79DE3B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MovieFetcher/Domain/UseCases/SearchMoviesUseCase.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "execute(query:page:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "351518A0-0493-4933-B59D-62F1E80C3868"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MovieFetcher/Domain/UseCases/SearchMoviesUseCase.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
+            landmarkName = "execute(query:page:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D29B83C1-96AB-4D67-B719-74F5E12B2BB9"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MovieFetcher/Data/Repositories/MovieRepository.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "searchMovies(query:page:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

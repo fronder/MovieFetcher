@@ -28,4 +28,16 @@ final class MovieRepository: MovieRepositoryProtocol {
     func cacheMovies(result: MovieSearchResult, query: String) {
         cache.cacheMovies(result.results, query: query, page: result.page)
     }
+    
+    func getCachedMovies(query: String, page: Int) -> MovieSearchResult? {
+        let movies = cache.getCachedMovies(query: query, page: page)
+        guard !movies.isEmpty else { return nil }
+        
+        return MovieSearchResult(
+            page: page,
+            results: movies,
+            totalPages: page,
+            totalResults: movies.count
+        )
+    }
 }

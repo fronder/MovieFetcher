@@ -19,10 +19,17 @@ final class SearchMoviesUseCase: SearchMoviesUseCaseProtocol {
     }
     
     func execute(query: String, page: Int) async throws -> MovieSearchResult {
+        if let cachedResult = repository.getCachedMovies(query: query, page: page) {
+            return cachedResult
+        }
+        
         do {
             let result = try await repository.searchMovies(query: query, page: page)
             return result
         } catch {
+            if let cachedResult = repository.getCachedMovies(query: query, page: page) {
+                return cachedResult
+            }
             throw error
         }
     }

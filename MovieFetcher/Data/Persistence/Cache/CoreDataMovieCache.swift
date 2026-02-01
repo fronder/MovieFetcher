@@ -15,6 +15,25 @@ final class CoreDataMovieCache: MovieCacheProtocol {
         self.coreDataManager = coreDataManager
     }
     
+    func getCachedMovies(query: String, page: Int) -> [Movie] {
+        let context = coreDataManager.viewContext
+        let fetchRequest: NSFetchRequest<MovieEntity> = MovieEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(
+            format: "searchQuery == %@ AND page == %d",
+            query.lowercased(),
+            page
+        )
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "popularity", ascending: false)]
+        
+        do {
+            let entities = try context.fetch(fetchRequest)
+            return entities.map { $0.toMovie() }
+        } catch {
+            print("Failed to fetch cached movies: \(error)")
+            return []
+        }
+    }
+    
     func cacheMovies(_ movies: [Movie], query: String, page: Int) {
         let context = coreDataManager.viewContext
         

@@ -7,4 +7,5 @@
 
 protocol MovieRepositoryProtocol {
     func searchMovies(query: String, page: Int) async throws -> MovieSearchResult
+    func getCachedMovies(query: String, page: Int) -> MovieSearchResult?
 }

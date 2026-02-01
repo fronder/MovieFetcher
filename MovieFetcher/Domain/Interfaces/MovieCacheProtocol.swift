@@ -9,4 +9,5 @@ import Foundation
 
 protocol MovieCacheProtocol {
     func cacheMovies(_ movies: [Movie], query: String, page: Int)
+    func getCachedMovies(query: String, page: Int) -> [Movie]
 }
