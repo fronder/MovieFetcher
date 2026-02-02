@@ -8,7 +8,7 @@
 import Foundation
 @testable import MovieFetcher
 
-final class MockMovieRepository: MovieDataRepositoryProtocol, MovieCacheRepositoryProtocol {
+final class MockMovieRepository: MovieDataRepositoryProtocol, MovieCacheRepositoryProtocol, FavoritesRepositoryProtocol {
     var searchResult: MovieSearchResult?
     var cachedResult: MovieSearchResult?
     var shouldThrowError = false
@@ -38,5 +38,17 @@ final class MockMovieRepository: MovieDataRepositoryProtocol, MovieCacheReposito
     
     func cacheMovies(result: MovieSearchResult, query: String) {
         cacheMoviesCallCount += 1
+    }
+    
+    func addToFavorites(movie: Movie) throws {
+        
+    }
+    
+    func isFavorite(movieId: Int) -> Bool {
+        return true
+    }
+    
+    func getFavoriteMovies() -> [Movie] {
+        []
     }
 }
