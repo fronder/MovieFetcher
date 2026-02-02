@@ -78,6 +78,9 @@ extension FavoritesViewController: UITableViewDataSource {
         
         let movie = viewModel.favoriteMovies[indexPath.row]
         cell.configure(with: movie, isFavorite: true, imageLoader: ImageLoader.shared)
+        cell.onFavoriteToggle = { [weak self] in
+            self?.viewModel.removeFromFavorites(movieId: movie.id)
+        }
         
         return cell
     }

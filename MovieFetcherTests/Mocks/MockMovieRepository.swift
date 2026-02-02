@@ -21,6 +21,7 @@ final class MockMovieRepository: MovieDataRepositoryProtocol, MovieCacheReposito
     var addToFavoritesCallCount = 0
     var getFavoriteMoviesCallCount = 0
     var isFavoriteCallCount = 0
+    var removeFromFavoritesCallCount = 0
     
     func searchMovies(query: String, page: Int) async throws -> MovieSearchResult {
         searchMoviesCallCount += 1
@@ -49,6 +50,12 @@ final class MockMovieRepository: MovieDataRepositoryProtocol, MovieCacheReposito
         addToFavoritesCallCount += 1
         favoriteMovies.append(movie)
         favoriteMovieIds.append(movie.id)
+    }
+    
+    func removeFromFavorites(movieId: Int) throws {
+        removeFromFavoritesCallCount += 1
+        favoriteMovies.removeAll { $0.id == movieId }
+        favoriteMovieIds.removeAll { $0 == movieId }
     }
     
     func getFavoriteMovies() -> [Movie] {

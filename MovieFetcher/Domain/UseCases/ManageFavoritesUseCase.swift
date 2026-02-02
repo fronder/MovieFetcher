@@ -11,10 +11,10 @@ protocol ManageFavoritesUseCaseProtocol {
     func isFavorite(movieId: Int) -> Bool
     func toggleFavorite(movie: Movie) throws
     func getFavorites() -> [Movie]
+    func removeFromFavorites(movieId: Int) throws
 }
 
 final class ManageFavoritesUseCase: ManageFavoritesUseCaseProtocol {
-    
     private let repository: FavoritesRepositoryProtocol
     
     init(repository: FavoritesRepositoryProtocol) {
@@ -27,7 +27,7 @@ final class ManageFavoritesUseCase: ManageFavoritesUseCaseProtocol {
     
     func toggleFavorite(movie: Movie) throws {
         if isFavorite(movieId: movie.id) {
-            
+            try removeFromFavorites(movieId: movie.id)
         } else {
             try addToFavorites(movie: movie)
         }
@@ -39,5 +39,9 @@ final class ManageFavoritesUseCase: ManageFavoritesUseCaseProtocol {
     
     func addToFavorites(movie: Movie) throws {
         try repository.addToFavorites(movie: movie)
+    }
+    
+    func removeFromFavorites(movieId: Int) throws {
+        try repository.removeFromFavorites(movieId: movieId)
     }
 }

@@ -62,7 +62,7 @@ final class CoreDataMovieCache: MovieCacheProtocol {
             }
         }
     }
-
+    
     func addToFavorites(movie: Movie) throws {
         let context = coreDataManager.viewContext
         
@@ -105,5 +105,17 @@ final class CoreDataMovieCache: MovieCacheProtocol {
             print("Failed to fetch favorites: \(error)")
             return []
         }
+    }
+    
+    func removeFromFavorites(movieId: Int) throws {
+        let context = coreDataManager.viewContext
+        
+        let fetchRequest: NSFetchRequest<FavoriteMovieEntity> = FavoriteMovieEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %d", movieId)
+        
+        let entities = try context.fetch(fetchRequest)
+        entities.forEach { context.delete($0) }
+        
+        try coreDataManager.saveContext()
     }
 }

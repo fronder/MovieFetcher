@@ -56,4 +56,27 @@ final class ManageFavoritesUseCaseTests: XCTestCase {
         XCTAssertFalse(isFavorite)
     }
 
+    func testRemoveFromFavorites_CallsRepository() throws {
+        try sut.removeFromFavorites(movieId: 1)
+        
+        XCTAssertEqual(mockRepository.removeFromFavoritesCallCount, 1)
+    }
+    
+    func testToggleFavorite_WhenNotFavorite_AddsToFavorites() throws {
+        mockRepository.favoriteMovieIds = []
+        
+        try sut.toggleFavorite(movie: MockData.movie)
+        
+        XCTAssertEqual(mockRepository.addToFavoritesCallCount, 1)
+        XCTAssertEqual(mockRepository.removeFromFavoritesCallCount, 0)
+    }
+    
+    func testToggleFavorite_WhenFavorite_RemovesFromFavorites() throws {
+        mockRepository.favoriteMovieIds = [MockData.movie.id]
+        
+        try sut.toggleFavorite(movie: MockData.movie)
+        
+        XCTAssertEqual(mockRepository.removeFromFavoritesCallCount, 1)
+        XCTAssertEqual(mockRepository.addToFavoritesCallCount, 0)
+    }
 }

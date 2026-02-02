@@ -21,4 +21,7 @@ final class MockManageFavoritesUseCase: ManageFavoritesUseCaseProtocol {
         return []
     }
     
+    func removeFromFavorites(movieId: Int) throws {
+        
+    }
 }

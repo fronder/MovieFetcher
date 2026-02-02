@@ -35,6 +35,10 @@ final class MockMovieCache: MovieCacheProtocol {
         
     }
     
+    func removeFromFavorites(movieId: Int) throws {
+        
+    }
+    
     func isFavorite(movieId: Int) -> Bool {
         return true
     }

@@ -51,4 +51,8 @@ final class MovieRepository: MovieDataRepositoryProtocol, MovieCacheRepositoryPr
     func getFavoriteMovies() -> [Movie] {
         return cache.getFavoriteMovies()
     }
+    
+    func removeFromFavorites(movieId: Int) throws {
+        try cache.removeFromFavorites(movieId: movieId)
+    }
 }
