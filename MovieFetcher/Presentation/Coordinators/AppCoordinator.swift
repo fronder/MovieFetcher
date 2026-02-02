@@ -29,6 +29,14 @@ final class AppCoordinator: Coordinator {
         viewController.onMovieTap = { [weak self] movie in
             self?.showMovieDetail(movie: movie)
         }
+        
+        let favoritesBarButton = UIBarButtonItem(
+            image: UIImage(systemName: "heart.fill"),
+            style: .plain,
+            target: self,
+            action: #selector(showFavorites)
+        )
+        viewController.navigationItem.rightBarButtonItem = favoritesBarButton
                 
         navigationController.pushViewController(viewController, animated: false)
     }
@@ -39,6 +47,14 @@ final class AppCoordinator: Coordinator {
         )
         
         let viewController = MovieDetailViewController(viewModel: viewModel)
+        navigationController.pushViewController(viewController, animated: true)
+    }
+    
+    @objc private func showFavorites() {
+        let viewModel = FavoritesViewModel()
+        
+        let viewController = FavoritesViewController(viewModel: viewModel)
+        
         navigationController.pushViewController(viewController, animated: true)
     }
 }
