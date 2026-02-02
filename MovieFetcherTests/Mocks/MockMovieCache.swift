@@ -8,10 +8,21 @@
 import Foundation
 
 final class MockMovieCache: MovieCacheProtocol {
+    var cachedMovies: [String: [Int: [Movie]]] = [:]
+    var lastCachedQuery: String?
+    var lastCachedPage: Int?
+    
     var cacheMoviesCallCount = 0
     
     func cacheMovies(_ movies: [Movie], query: String, page: Int) {
         cacheMoviesCallCount += 1
+        lastCachedQuery = query
+        lastCachedPage = page
+        
+        if cachedMovies[query] == nil {
+            cachedMovies[query] = [:]
+        }
+        cachedMovies[query]?[page] = movies
     }
     
     func getCachedMovies(query: String, page: Int) -> [Movie] {
