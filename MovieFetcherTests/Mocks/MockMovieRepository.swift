@@ -16,6 +16,7 @@ final class MockMovieRepository: MovieDataRepositoryProtocol, MovieCacheReposito
     var searchMoviesCallCount = 0
     var getCachedMoviesCallCount = 0
     var cacheMoviesCallCount = 0
+    var addToFavoritesCallCount = 0
     
     func searchMovies(query: String, page: Int) async throws -> MovieSearchResult {
         searchMoviesCallCount += 1
@@ -41,7 +42,7 @@ final class MockMovieRepository: MovieDataRepositoryProtocol, MovieCacheReposito
     }
     
     func addToFavorites(movie: Movie) throws {
-        
+        addToFavoritesCallCount += 1
     }
     
     func isFavorite(movieId: Int) -> Bool {

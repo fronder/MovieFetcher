@@ -23,4 +23,10 @@ final class ManageFavoritesUseCaseTests: XCTestCase {
         mockRepository = nil
         super.tearDown()
     }
+    
+    func testAddToFavorites_CallsRepository() throws {
+        try sut.addToFavorites(movie: MockData.movie)
+        
+        XCTAssertEqual(mockRepository.addToFavoritesCallCount, 1)
+    }
 }
