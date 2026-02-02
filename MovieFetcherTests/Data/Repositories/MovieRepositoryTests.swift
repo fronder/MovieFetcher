@@ -36,4 +36,17 @@ final class MovieRepositoryTests: XCTestCase {
         XCTAssertEqual(result, expectedResult)
         XCTAssertEqual(mockNetworkService.requestCallCount, 1)
     }
+    
+    func testSearchMovies_NetworkError_ThrowsError() async {
+        mockNetworkService.shouldThrowError = true
+        mockNetworkService.errorToThrow = NetworkError.networkError(NSError(domain: "test", code: -1))
+        
+        do {
+            _ = try await sut.searchMovies(query: "Inception", page: 1)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertTrue(error is NetworkError)
+            XCTAssertEqual(mockNetworkService.requestCallCount, 1)
+        }
+    }
 }
