@@ -15,7 +15,7 @@ final class SearchMoviesUseCaseTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockRepository = MockMovieRepository()
-        sut = SearchMoviesUseCase(repository: mockRepository)
+        sut = SearchMoviesUseCase(dataRepository: mockRepository, cacheRepository: mockRepository)
     }
     
     override func tearDown() {

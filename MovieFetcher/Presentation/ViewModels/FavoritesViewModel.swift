@@ -6,7 +6,12 @@
 //
 
 import Foundation
+import Combine
 
-final class FavoritesViewModel {
+@MainActor
+final class FavoritesViewModel: ObservableObject {
+    @Published var favoriteMovies: [Movie] = []
+    
+    init() {}
     
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class MovieRepository: MovieRepositoryProtocol {
+final class MovieRepository: MovieDataRepositoryProtocol, MovieCacheRepositoryProtocol {
     private let networkService: NetworkServiceProtocol
     private let cache: MovieCacheProtocol
     

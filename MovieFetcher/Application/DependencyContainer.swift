@@ -9,7 +9,7 @@ import Foundation
 
 final class DependencyContainer {
     private let networkService: NetworkServiceProtocol
-    private let movieRepository: MovieRepositoryProtocol
+    private let movieRepository: MovieRepository
     private let cache: MovieCacheProtocol
     
     init() {
@@ -22,6 +22,6 @@ final class DependencyContainer {
     }
     
     func makeSearchMoviesUseCase() -> SearchMoviesUseCaseProtocol {
-        return SearchMoviesUseCase(repository: movieRepository)
+        return SearchMoviesUseCase(dataRepository: movieRepository, cacheRepository: movieRepository)
     }
 }

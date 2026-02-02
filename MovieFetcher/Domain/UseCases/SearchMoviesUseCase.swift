@@ -12,23 +12,25 @@ protocol SearchMoviesUseCaseProtocol {
 }
 
 final class SearchMoviesUseCase: SearchMoviesUseCaseProtocol {
-    private let repository: MovieRepositoryProtocol
+    private let dataRepository: MovieDataRepositoryProtocol
+    private let cacheRepository: MovieCacheRepositoryProtocol
     
-    init(repository: MovieRepositoryProtocol) {
-        self.repository = repository
+    init(dataRepository: MovieDataRepositoryProtocol, cacheRepository: MovieCacheRepositoryProtocol) {
+        self.dataRepository = dataRepository
+        self.cacheRepository = cacheRepository
     }
     
     func execute(query: String, page: Int) async throws -> MovieSearchResult {
-        if let cachedResult = repository.getCachedMovies(query: query, page: page) {
+        if let cachedResult = cacheRepository.getCachedMovies(query: query, page: page) {
             return cachedResult
         }
         
         do {
-            let result = try await repository.searchMovies(query: query, page: page)
-            repository.cacheMovies(result: result, query: query)
+            let result = try await dataRepository.searchMovies(query: query, page: page)
+            cacheRepository.cacheMovies(result: result, query: query)
             return result
         } catch {
-            if let cachedResult = repository.getCachedMovies(query: query, page: page) {
+            if let cachedResult = cacheRepository.getCachedMovies(query: query, page: page) {
                 return cachedResult
             }
             throw error
