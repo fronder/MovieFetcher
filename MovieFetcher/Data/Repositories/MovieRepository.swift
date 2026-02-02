@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class MovieRepository: MovieDataRepositoryProtocol, MovieCacheRepositoryProtocol {
+final class MovieRepository: MovieDataRepositoryProtocol, MovieCacheRepositoryProtocol, FavoritesRepositoryProtocol {
     private let networkService: NetworkServiceProtocol
     private let cache: MovieCacheProtocol
     
@@ -38,5 +38,17 @@ final class MovieRepository: MovieDataRepositoryProtocol, MovieCacheRepositoryPr
             totalPages: page,
             totalResults: movies.count
         )
+    }
+    
+    func addToFavorites(movie: Movie) throws {
+        try cache.addToFavorites(movie: movie)
+    }
+    
+    func isFavorite(movieId: Int) -> Bool {
+        return cache.isFavorite(movieId: movieId)
+    }
+    
+    func getFavoriteMovies() -> [Movie] {
+        return cache.getFavoriteMovies()
     }
 }

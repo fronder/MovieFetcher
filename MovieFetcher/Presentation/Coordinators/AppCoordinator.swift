@@ -23,7 +23,10 @@ final class AppCoordinator: Coordinator {
     }
     
     private func showMovieSearch() {
-        let viewModel = MovieSearchViewModel(searchMoviesUseCase: dependencyContainer.makeSearchMoviesUseCase())
+        let viewModel = MovieSearchViewModel(
+            searchMoviesUseCase: dependencyContainer.makeSearchMoviesUseCase(),
+            manageFavoritesUseCase: dependencyContainer.makeManageFavoritesUseCase()
+        )
         
         let viewController = MovieSearchViewController(viewModel: viewModel)
         viewController.onMovieTap = { [weak self] movie in
@@ -51,7 +54,7 @@ final class AppCoordinator: Coordinator {
     }
     
     @objc private func showFavorites() {
-        let viewModel = FavoritesViewModel()
+        let viewModel = FavoritesViewModel(manageFavoritesUseCase: dependencyContainer.makeManageFavoritesUseCase())
         
         let viewController = FavoritesViewController(viewModel: viewModel)
         

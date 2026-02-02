@@ -24,4 +24,8 @@ final class DependencyContainer {
     func makeSearchMoviesUseCase() -> SearchMoviesUseCaseProtocol {
         return SearchMoviesUseCase(dataRepository: movieRepository, cacheRepository: movieRepository)
     }
+    
+    func makeManageFavoritesUseCase() -> ManageFavoritesUseCaseProtocol {
+        return ManageFavoritesUseCase(repository: movieRepository)
+    }
 }

@@ -114,7 +114,11 @@ extension MovieSearchViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.identifier, for: indexPath) as? MovieTableViewCell else { return UITableViewCell() }
         
         let movie = viewModel.movies[indexPath.row]
-        cell.configure(with: movie, isFavorite: true, imageLoader: ImageLoader.shared)
+        let isFavorite = viewModel.isFavorite(movieId: movie.id)
+        cell.configure(with: movie, isFavorite: isFavorite, imageLoader: ImageLoader.shared)
+        cell.onFavoriteToggle = { [weak self] in
+            self?.viewModel.toggleFavorite(movie: movie)
+        }
         
         return cell
     }

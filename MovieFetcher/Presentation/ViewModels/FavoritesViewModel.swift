@@ -12,6 +12,13 @@ import Combine
 final class FavoritesViewModel: ObservableObject {
     @Published var favoriteMovies: [Movie] = []
     
-    init() {}
+    private let manageFavoritesUseCase: ManageFavoritesUseCaseProtocol
     
+    init(manageFavoritesUseCase: ManageFavoritesUseCaseProtocol) {
+        self.manageFavoritesUseCase = manageFavoritesUseCase
+    }
+    
+    func loadFavorites() {
+        favoriteMovies = manageFavoritesUseCase.getFavorites()
+    }
 }

@@ -68,8 +68,6 @@ final class MovieTableViewCell: UITableViewCell {
     }
     
     private func setupUI() {
-        favoriteButton.isHidden = true
-        
         posterImageView.translatesAutoresizingMaskIntoConstraints = false
         posterImageView.layer.cornerRadius = 8
         posterImageView.clipsToBounds = true

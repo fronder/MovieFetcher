@@ -47,16 +47,42 @@ final class FavoritesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        bindViewModel()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.loadFavorites()
+    }
+    
+    private func bindViewModel() {
+        viewModel.$favoriteMovies
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] movies in
+                self?.tableView.reloadData()
+                self?.emptyStateLabel.isHidden = !movies.isEmpty
+            }
+            .store(in: &cancellables)
     }
 }
 
 extension FavoritesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return viewModel.favoriteMovies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: MovieTableViewCell.identifier,
+            for: indexPath
+        ) as? MovieTableViewCell else {
+            return UITableViewCell()
+        }
+        
+        let movie = viewModel.favoriteMovies[indexPath.row]
+        cell.configure(with: movie, isFavorite: true, imageLoader: ImageLoader.shared)
+        
+        return cell
     }
 }
 

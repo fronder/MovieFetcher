@@ -12,6 +12,7 @@ import Combine
 final class MovieSearchViewModelTests: XCTestCase {
     var sut: MovieSearchViewModel!
     var mockSearchUseCase: MockSearchMoviesUseCase!
+    var mockFavoritesUseCase: MockManageFavoritesUseCase!
     var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
@@ -20,7 +21,8 @@ final class MovieSearchViewModelTests: XCTestCase {
         cancellables = Set<AnyCancellable>()
         
         sut = MovieSearchViewModel(
-            searchMoviesUseCase: mockSearchUseCase
+            searchMoviesUseCase: mockSearchUseCase,
+            manageFavoritesUseCase: mockFavoritesUseCase
         )
     }
     

@@ -63,4 +63,47 @@ final class CoreDataMovieCache: MovieCacheProtocol {
         }
     }
 
+    func addToFavorites(movie: Movie) throws {
+        let context = coreDataManager.viewContext
+        
+        let fetchRequest: NSFetchRequest<FavoriteMovieEntity> = FavoriteMovieEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %d", movie.id)
+        
+        let existingEntities = try context.fetch(fetchRequest)
+        
+        if existingEntities.isEmpty {
+            let entity = FavoriteMovieEntity(context: context)
+            entity.update(from: movie)
+            entity.addedDate = Date()
+            try coreDataManager.saveContext()
+        }
+    }
+    
+    func isFavorite(movieId: Int) -> Bool {
+        let context = coreDataManager.viewContext
+        
+        let fetchRequest: NSFetchRequest<FavoriteMovieEntity> = FavoriteMovieEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %d", movieId)
+        
+        do {
+            let count = try context.count(for: fetchRequest)
+            return count > 0
+        } catch {
+            return false
+        }
+    }
+    
+    func getFavoriteMovies() -> [Movie] {
+        let context = coreDataManager.viewContext
+        let fetchRequest: NSFetchRequest<FavoriteMovieEntity> = FavoriteMovieEntity.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "addedDate", ascending: false)]
+        
+        do {
+            let entities = try context.fetch(fetchRequest)
+            return entities.map { $0.toMovie() }
+        } catch {
+            print("Failed to fetch favorites: \(error)")
+            return []
+        }
+    }
 }

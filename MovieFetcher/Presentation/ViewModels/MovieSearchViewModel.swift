@@ -20,12 +20,14 @@ final class MovieSearchViewModel: ObservableObject {
     private var currentSearchQuery = ""
     
     private let searchMoviesUseCase: SearchMoviesUseCaseProtocol
+    private let manageFavoritesUseCase: ManageFavoritesUseCaseProtocol
     
     private var searchTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
     
-    init(searchMoviesUseCase: SearchMoviesUseCaseProtocol) {
+    init(searchMoviesUseCase: SearchMoviesUseCaseProtocol, manageFavoritesUseCase: ManageFavoritesUseCaseProtocol) {
         self.searchMoviesUseCase = searchMoviesUseCase
+        self.manageFavoritesUseCase = manageFavoritesUseCase
         
         setupSearchDebounce()
     }
@@ -92,5 +94,18 @@ final class MovieSearchViewModel: ObservableObject {
         
         currentPage += 1
         await searchMovies(query: currentSearchQuery, resetResults: false)
+    }
+    
+    func isFavorite(movieId: Int) -> Bool {
+        return manageFavoritesUseCase.isFavorite(movieId: movieId)
+    }
+    
+    func toggleFavorite(movie: Movie) {
+        do {
+            try manageFavoritesUseCase.toggleFavorite(movie: movie)
+            objectWillChange.send()
+        } catch {
+            errorMessage = "Failed to update favorites: \(error.localizedDescription)"
+        }
     }
 }
