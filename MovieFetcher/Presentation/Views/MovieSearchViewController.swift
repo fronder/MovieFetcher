@@ -118,6 +118,7 @@ extension MovieSearchViewController: UITableViewDataSource {
         cell.configure(with: movie, isFavorite: isFavorite, imageLoader: ImageLoader.shared)
         cell.onFavoriteToggle = { [weak self] in
             self?.viewModel.toggleFavorite(movie: movie)
+            self?.tableView.reloadRows(at: [indexPath], with: .none)
         }
         
         return cell
