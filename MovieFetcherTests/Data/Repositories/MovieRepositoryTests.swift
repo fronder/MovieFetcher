@@ -1,0 +1,39 @@
+//
+//  MovieRepositoryTests.swift
+//  MovieFetcherTests
+//
+//  Created by Hasan Abdullah on 02/02/26.
+//
+
+import XCTest
+@testable import MovieFetcher
+
+final class MovieRepositoryTests: XCTestCase {
+    var sut: MovieRepository!
+    var mockNetworkService: MockNetworkService!
+    var mockCache: MockMovieCache!
+    
+    override func setUp() {
+        super.setUp()
+        mockNetworkService = MockNetworkService()
+        mockCache = MockMovieCache()
+        sut = MovieRepository(networkService: mockNetworkService, cache: mockCache)
+    }
+    
+    override func tearDown() {
+        sut = nil
+        mockNetworkService = nil
+        mockCache = nil
+        super.tearDown()
+    }
+    
+    func testSearchMovies_Success_ReturnsResult() async throws {
+        let expectedResult = MockData.searchResult
+        mockNetworkService.result = expectedResult
+        
+        let result = try await sut.searchMovies(query: "Inception", page: 1)
+        
+        XCTAssertEqual(result, expectedResult)
+        XCTAssertEqual(mockNetworkService.requestCallCount, 1)
+    }
+}
