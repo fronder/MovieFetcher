@@ -12,11 +12,13 @@ final class MockMovieRepository: MovieDataRepositoryProtocol, MovieCacheReposito
     var searchResult: MovieSearchResult?
     var cachedResult: MovieSearchResult?
     var shouldThrowError = false
+    var favoriteMovies: [Movie] = []
     
     var searchMoviesCallCount = 0
     var getCachedMoviesCallCount = 0
     var cacheMoviesCallCount = 0
     var addToFavoritesCallCount = 0
+    var getFavoriteMoviesCallCount = 0
     
     func searchMovies(query: String, page: Int) async throws -> MovieSearchResult {
         searchMoviesCallCount += 1
@@ -45,11 +47,12 @@ final class MockMovieRepository: MovieDataRepositoryProtocol, MovieCacheReposito
         addToFavoritesCallCount += 1
     }
     
-    func isFavorite(movieId: Int) -> Bool {
-        return true
+    func getFavoriteMovies() -> [Movie] {
+        getFavoriteMoviesCallCount += 1
+        return favoriteMovies
     }
     
-    func getFavoriteMovies() -> [Movie] {
-        []
+    func isFavorite(movieId: Int) -> Bool {
+        return true
     }
 }

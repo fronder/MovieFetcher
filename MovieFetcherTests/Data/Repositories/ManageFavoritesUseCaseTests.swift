@@ -29,4 +29,14 @@ final class ManageFavoritesUseCaseTests: XCTestCase {
         
         XCTAssertEqual(mockRepository.addToFavoritesCallCount, 1)
     }
+    
+    func testGetFavorites_ReturnsRepositoryFavorites() {
+        let expectedMovies = [MockData.movie]
+        mockRepository.favoriteMovies = expectedMovies
+        
+        let favorites = sut.getFavorites()
+        
+        XCTAssertEqual(favorites, expectedMovies)
+        XCTAssertEqual(mockRepository.getFavoriteMoviesCallCount, 1)
+    }
 }
