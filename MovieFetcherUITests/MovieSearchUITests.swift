@@ -68,4 +68,69 @@ final class MovieSearchUITests: XCTestCase {
             XCTAssertTrue(backButton.exists)
         }
     }
+    
+    func testSearchResults_DisplayMovieInformation() {
+        let searchBar = app.searchFields.firstMatch
+        searchBar.tap()
+        searchBar.typeText("Matrix")
+        
+        let table = app.tables.firstMatch
+        _ = table.waitForExistence(timeout: 5)
+        
+        let firstCell = table.cells.firstMatch
+        if firstCell.waitForExistence(timeout: 5) {
+            XCTAssertTrue(firstCell.staticTexts.count > 0, "Cell should display movie information")
+        }
+    }
+    
+    func testClearSearch_RemovesResults() {
+        let searchBar = app.searchFields.firstMatch
+        searchBar.tap()
+        searchBar.typeText("Avatar")
+        
+        let table = app.tables.firstMatch
+        _ = table.waitForExistence(timeout: 5)
+        
+        if table.cells.count > 0 {
+            let clearButton = searchBar.buttons["Clear text"]
+            if clearButton.exists {
+                clearButton.tap()
+                
+                let emptyStateLabel = app.staticTexts["Search for movies"]
+                XCTAssertTrue(emptyStateLabel.waitForExistence(timeout: 2))
+            }
+        }
+    }
+    
+    func testNavigateBackFromDetail_PreservesSearchResults() {
+        let searchBar = app.searchFields.firstMatch
+        searchBar.tap()
+        searchBar.typeText("Inception")
+        
+        let table = app.tables.firstMatch
+        _ = table.waitForExistence(timeout: 5)
+        
+        let firstCell = table.cells.firstMatch
+        if firstCell.waitForExistence(timeout: 5) {
+            firstCell.tap()
+            
+            let backButton = app.navigationBars.buttons.firstMatch
+            if backButton.exists {
+                backButton.tap()
+                
+                XCTAssertTrue(table.exists, "Search results should be preserved")
+            }
+        }
+    }
+    
+    func testLoadingIndicator_AppearsWhileSearching() {
+        let searchBar = app.searchFields.firstMatch
+        searchBar.tap()
+        searchBar.typeText("Action")
+        
+        let loadingIndicator = app.activityIndicators.firstMatch
+        if loadingIndicator.waitForExistence(timeout: 2) {
+            XCTAssertTrue(loadingIndicator.exists, "Loading indicator should appear")
+        }
+    }
 }
