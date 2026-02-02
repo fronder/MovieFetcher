@@ -59,4 +59,16 @@ final class MovieRepositoryTests: XCTestCase {
         XCTAssertEqual(mockCache.lastCachedQuery, "Inception")
         XCTAssertEqual(mockCache.lastCachedPage, 1)
     }
+    
+    func testGetCachedMovies_WithCachedData_ReturnsSearchResult() {
+        let movies = MockData.movies
+        mockCache.cachedMovies["Inception"] = [1: movies]
+        
+        let result = sut.getCachedMovies(query: "Inception", page: 1)
+        
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.results.count, 2)
+        XCTAssertEqual(result?.page, 1)
+        XCTAssertEqual(mockCache.getCachedMoviesCallCount, 1)
+    }
 }

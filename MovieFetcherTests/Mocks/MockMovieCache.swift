@@ -11,8 +11,8 @@ final class MockMovieCache: MovieCacheProtocol {
     var cachedMovies: [String: [Int: [Movie]]] = [:]
     var lastCachedQuery: String?
     var lastCachedPage: Int?
-    
     var cacheMoviesCallCount = 0
+    var getCachedMoviesCallCount = 0
     
     func cacheMovies(_ movies: [Movie], query: String, page: Int) {
         cacheMoviesCallCount += 1
@@ -26,7 +26,9 @@ final class MockMovieCache: MovieCacheProtocol {
     }
     
     func getCachedMovies(query: String, page: Int) -> [Movie] {
-        return []
+        getCachedMoviesCallCount += 1
+        
+        return cachedMovies[query]?[page] ?? []
     }
     
     func addToFavorites(movie: Movie) throws {
