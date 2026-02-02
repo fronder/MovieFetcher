@@ -114,7 +114,7 @@ extension MovieSearchViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.identifier, for: indexPath) as? MovieTableViewCell else { return UITableViewCell() }
         
         let movie = viewModel.movies[indexPath.row]
-        cell.configure(with: movie, imageLoader: ImageLoader.shared)
+        cell.configure(with: movie, isFavorite: true, imageLoader: ImageLoader.shared)
         
         return cell
     }
