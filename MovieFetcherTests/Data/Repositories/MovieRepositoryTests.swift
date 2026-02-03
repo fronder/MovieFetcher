@@ -86,4 +86,30 @@ final class MovieRepositoryTests: XCTestCase {
         
         XCTAssertNil(result)
     }
+    
+    func testAddToFavorites_CallsCacheAddToFavorites() throws {
+        let movie = MockData.movie
+        
+        try sut.addToFavorites(movie: movie)
+        
+        XCTAssertEqual(mockCache.addToFavoritesCallCount, 1)
+    }
+    
+    func testRemoveFromFavorites_CallsCacheRemoveFromFavorites() throws {
+        try sut.removeFromFavorites(movieId: 1)
+        
+        XCTAssertEqual(mockCache.removeFromFavoritesCallCount, 1)
+    }
+    
+    func testIsFavorite_CallsCacheIsFavorite() {
+        _ = sut.isFavorite(movieId: 1)
+        
+        XCTAssertEqual(mockCache.isFavoriteCallCount, 1)
+    }
+    
+    func testGetFavoriteMovies_CallsCacheGetFavoriteMovies() {
+        _ = sut.getFavoriteMovies()
+        
+        XCTAssertEqual(mockCache.getFavoriteMoviesCallCount, 1)
+    }
 }

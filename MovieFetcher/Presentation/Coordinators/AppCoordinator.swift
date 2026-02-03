@@ -46,7 +46,8 @@ final class AppCoordinator: Coordinator {
     
     private func showMovieDetail(movie: Movie) {
         let viewModel = MovieDetailViewModel(
-            movie: movie
+            movie: movie,
+            manageFavoritesUseCase: dependencyContainer.makeManageFavoritesUseCase()
         )
         
         let viewController = MovieDetailViewController(viewModel: viewModel)

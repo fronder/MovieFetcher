@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import Combine
 
 final class MovieDetailViewController: UIViewController {
     private let viewModel: MovieDetailViewModel
+    private var cancellables = Set<AnyCancellable>()
     
     private let scrollView: UIScrollView = {
         let scroll = UIScrollView()
@@ -25,7 +27,7 @@ final class MovieDetailViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 24, weight: .bold)
-        label.numberOfLines = 0
+        label.numberOfLines = 3
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -55,6 +57,24 @@ final class MovieDetailViewController: UIViewController {
         return label
     }()
     
+    private let ratingLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 18, weight: .semibold)
+        label.textColor = .systemOrange
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var favoriteButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "heart"), for: .normal)
+        button.setImage(UIImage(systemName: "heart.fill"), for: .selected)
+        button.tintColor = .systemRed
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     private let backdropImageView = AsyncImageView()
     private let posterImageView = AsyncImageView()
     
@@ -70,7 +90,26 @@ final class MovieDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        bindViewModel()
         configureWithMovie()
+    }
+    
+    private func bindViewModel() {
+        viewModel.$isFavorite
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isFavorite in
+                self?.favoriteButton.isSelected = isFavorite
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$errorMessage
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorMessage in
+                if let error = errorMessage {
+                    self?.showError(error)
+                }
+            }
+            .store(in: &cancellables)
     }
     
     private func configureWithMovie() {
@@ -78,10 +117,26 @@ final class MovieDetailViewController: UIViewController {
         
         titleLabel.text = movie.title
         releaseDateLabel.text = movie.formattedReleaseDate
+        ratingLabel.text = "⭐️ \(String(format: "%.1f", movie.voteAverage)) (\(movie.voteCount) votes)"
         overviewLabel.text = movie.overview.isEmpty ? "No overview available" : movie.overview
+        favoriteButton.isSelected = viewModel.isFavorite
         
         backdropImageView.loadImage(from: movie.backdropURL, imageLoader: ImageLoader.shared)
         posterImageView.loadImage(from: movie.posterURL, imageLoader: ImageLoader.shared)
+    }
+    
+    @objc private func favoriteButtonTapped() {
+        viewModel.toggleFavorite()
+    }
+    
+    private func showError(_ message: String) {
+        let alert = UIAlertController(
+            title: "Error",
+            message: message,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 }
 
@@ -103,6 +158,8 @@ extension MovieDetailViewController {
         contentView.addSubview(posterImageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(releaseDateLabel)
+        contentView.addSubview(ratingLabel)
+        contentView.addSubview(favoriteButton)
         contentView.addSubview(overviewTitleLabel)
         contentView.addSubview(overviewLabel)
         
@@ -135,6 +192,14 @@ extension MovieDetailViewController {
             releaseDateLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             releaseDateLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
             releaseDateLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            
+            ratingLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            ratingLabel.topAnchor.constraint(equalTo: releaseDateLabel.bottomAnchor, constant: 8),
+            
+            favoriteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            favoriteButton.centerYAnchor.constraint(equalTo: ratingLabel.centerYAnchor),
+            favoriteButton.widthAnchor.constraint(equalToConstant: 44),
+            favoriteButton.heightAnchor.constraint(equalToConstant: 44),
             
             overviewTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             overviewTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
