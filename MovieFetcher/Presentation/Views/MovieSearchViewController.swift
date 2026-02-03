@@ -12,6 +12,8 @@ final class MovieSearchViewController: UIViewController {
     private let viewModel: MovieSearchViewModel
     private var cancellables = Set<AnyCancellable>()
     
+    private var dataSource: UITableViewDiffableDataSource<Int, Movie>!
+    
     private let searchController: UISearchController = {
         let controller = UISearchController(searchResultsController: nil)
         controller.obscuresBackgroundDuringPresentation = false
@@ -22,7 +24,6 @@ final class MovieSearchViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let table = UITableView()
         table.register(MovieTableViewCell.self, forCellReuseIdentifier: MovieTableViewCell.identifier)
-        table.dataSource = self
         table.delegate = self
         table.rowHeight = UITableView.automaticDimension
         table.estimatedRowHeight = 144
@@ -61,14 +62,43 @@ final class MovieSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        configureDataSource()
         bindViewModel()
+    }
+    
+    private func configureDataSource() {
+        dataSource = UITableViewDiffableDataSource<Int, Movie>(tableView: tableView) { [weak self] tableView, indexPath, movie in
+            guard let self = self,
+                  let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.identifier, for: indexPath) as? MovieTableViewCell else {
+                return UITableViewCell()
+            }
+            
+            let isFavorite = self.viewModel.isFavorite(movieId: movie.id)
+            cell.configure(with: movie, isFavorite: isFavorite, imageLoader: ImageLoader.shared)
+            cell.onFavoriteToggle = { [weak self] in
+                guard let self = self else { return }
+                self.viewModel.toggleFavorite(movie: movie)
+                var snapshot = self.dataSource.snapshot()
+                snapshot.reconfigureItems([movie])
+                self.dataSource.apply(snapshot, animatingDifferences: false)
+            }
+            
+            return cell
+        }
+    }
+    
+    private func updateSnapshot(animatingDifferences: Bool = true) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, Movie>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(viewModel.movies)
+        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
     }
     
     private func bindViewModel() {
         viewModel.$movies
             .receive(on: DispatchQueue.main)
             .sink { [weak self] movies in
-                self?.tableView.reloadData()
+                self?.updateSnapshot()
                 self?.emptyStateLabel.isHidden = !movies.isEmpty || self?.viewModel.isLoading == true
             }
             .store(in: &cancellables)
@@ -105,30 +135,10 @@ final class MovieSearchViewController: UIViewController {
     }
 }
 
-extension MovieSearchViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.movies.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.identifier, for: indexPath) as? MovieTableViewCell else { return UITableViewCell() }
-        
-        let movie = viewModel.movies[indexPath.row]
-        let isFavorite = viewModel.isFavorite(movieId: movie.id)
-        cell.configure(with: movie, isFavorite: isFavorite, imageLoader: ImageLoader.shared)
-        cell.onFavoriteToggle = { [weak self] in
-            self?.viewModel.toggleFavorite(movie: movie)
-            self?.tableView.reloadRows(at: [indexPath], with: .none)
-        }
-        
-        return cell
-    }
-}
-
 extension MovieSearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let movie = viewModel.movies[indexPath.row]
+        guard let movie = dataSource.itemIdentifier(for: indexPath) else { return }
         onMovieTap?(movie)
     }
     

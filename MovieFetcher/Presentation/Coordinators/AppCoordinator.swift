@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 final class AppCoordinator: Coordinator {
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []

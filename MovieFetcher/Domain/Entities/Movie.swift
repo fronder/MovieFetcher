@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Movie: Equatable, Codable, Hashable {
+struct Movie: Equatable, Codable, Hashable, @unchecked Sendable {
     let id: Int
     let title: String
     let overview: String
