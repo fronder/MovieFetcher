@@ -60,6 +60,15 @@ final class MovieRepositoryTests: XCTestCase {
         XCTAssertEqual(mockCache.lastCachedPage, 1)
     }
     
+    func testCacheMovies_StoresTotalPagesInCache() {
+        let result = MovieSearchResult(page: 1, results: MockData.movies, totalPages: 10, totalResults: 100)
+        
+        sut.cacheMovies(result: result, query: "Inception")
+        
+        XCTAssertEqual(mockCache.cacheMoviesCallCount, 1)
+        XCTAssertEqual(mockCache.lastCachedTotalPages, 10)
+    }
+    
     func testGetCachedMovies_WithCachedData_ReturnsSearchResult() {
         let movies = MockData.movies
         mockCache.cachedMovies["Inception"] = [1: movies]
@@ -85,6 +94,42 @@ final class MovieRepositoryTests: XCTestCase {
         let result = sut.getCachedMovies(query: "Inception", page: 1)
         
         XCTAssertNil(result)
+    }
+    
+    func testGetCachedMovies_WithCachedTotalPages_ReturnsCorrectTotalPages() {
+        let movies = MockData.movies
+        mockCache.cachedMovies["Inception"] = [1: movies]
+        mockCache.cachedTotalPages["Inception"] = [1: 15]
+        
+        let result = sut.getCachedMovies(query: "Inception", page: 1)
+        
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.totalPages, 15)
+        XCTAssertEqual(mockCache.getCachedTotalPagesCallCount, 1)
+    }
+    
+    func testGetCachedMovies_WithoutCachedTotalPages_ReturnsFallbackValue() {
+        let movies = MockData.movies
+        mockCache.cachedMovies["Inception"] = [1: movies]
+        
+        let result = sut.getCachedMovies(query: "Inception", page: 1)
+        
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.totalPages, 1000) // Fallback value
+        XCTAssertEqual(mockCache.getCachedTotalPagesCallCount, 1)
+    }
+    
+    func testGetCachedMovies_DifferentPages_ReturnsDifferentTotalPages() {
+        let movies = MockData.movies
+        mockCache.cachedMovies["Inception"] = [1: movies, 2: movies]
+        mockCache.cachedTotalPages["Inception"] = [1: 10, 2: 10]
+        
+        let result1 = sut.getCachedMovies(query: "Inception", page: 1)
+        let result2 = sut.getCachedMovies(query: "Inception", page: 2)
+        
+        XCTAssertEqual(result1?.totalPages, 10)
+        XCTAssertEqual(result2?.totalPages, 10)
+        XCTAssertEqual(mockCache.getCachedTotalPagesCallCount, 2)
     }
     
     func testAddToFavorites_CallsCacheAddToFavorites() throws {

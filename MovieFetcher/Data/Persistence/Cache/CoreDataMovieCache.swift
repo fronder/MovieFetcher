@@ -34,7 +34,7 @@ final class CoreDataMovieCache: MovieCacheProtocol {
         }
     }
     
-    func cacheMovies(_ movies: [Movie], query: String, page: Int) {
+    func cacheMovies(_ movies: [Movie], query: String, page: Int, totalPages: Int) {
         let context = coreDataManager.viewContext
         
         context.perform {
@@ -43,7 +43,8 @@ final class CoreDataMovieCache: MovieCacheProtocol {
                 fetchRequest.predicate = NSPredicate(
                     format: "id == %d AND searchQuery == %@ AND page == %d",
                     movie.id,
-                    query.lowercased()
+                    query.lowercased(),
+                    page
                 )
                 
                 do {
@@ -53,6 +54,7 @@ final class CoreDataMovieCache: MovieCacheProtocol {
                     entity.update(from: movie)
                     entity.searchQuery = query.lowercased()
                     entity.page = Int64(page)
+                    entity.totalPages = Int64(totalPages)
                     entity.cachedDate = Date()
                     
                     try self.coreDataManager.saveContext()
@@ -117,5 +119,24 @@ final class CoreDataMovieCache: MovieCacheProtocol {
         entities.forEach { context.delete($0) }
         
         try coreDataManager.saveContext()
+    }
+    
+    func getCachedTotalPages(query: String, page: Int) -> Int? {
+        let context = coreDataManager.viewContext
+        let fetchRequest: NSFetchRequest<MovieEntity> = MovieEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(
+            format: "searchQuery == %@ AND page == %d",
+            query.lowercased(),
+            page
+        )
+        fetchRequest.fetchLimit = 1
+        
+        do {
+            let entities = try context.fetch(fetchRequest)
+            return entities.first.map { Int($0.totalPages) }
+        } catch {
+            print("Failed to fetch cached totalPages: \(error)")
+            return nil
+        }
     }
 }

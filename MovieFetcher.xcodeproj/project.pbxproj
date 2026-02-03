@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9FF745B72F3232A40029F2B0 /* MovieEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF745B52F3232A40029F2B0 /* MovieEntity+CoreDataClass.swift */; };
+		9FF745B82F3232A40029F2B0 /* MovieEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF745B62F3232A40029F2B0 /* MovieEntity+CoreDataProperties.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		9F5C2E3C2F2CF0BD0099EABC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +32,8 @@
 		9F5C2E222F2CF0BB0099EABC /* MovieFetcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieFetcher.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F5C2E3B2F2CF0BD0099EABC /* MovieFetcherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieFetcherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F5C2E452F2CF0BD0099EABC /* MovieFetcherUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieFetcherUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FF745B52F3232A40029F2B0 /* MovieEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "MovieEntity+CoreDataClass.swift"; path = "MovieFetcher/Data/Persistence/Entities/MovieEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		9FF745B62F3232A40029F2B0 /* MovieEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "MovieEntity+CoreDataProperties.swift"; path = "MovieFetcher/Data/Persistence/Entities/MovieEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -44,7 +51,6 @@
 				Data/Network/NetworkError.swift,
 				Data/Network/NetworkService.swift,
 				Data/Persistence/Cache/Manager/CoreDataManager.swift,
-				"Data/Persistence/Entities/MovieEntity+CoreDataClass.swift",
 				Data/Repositories/MovieRepository.swift,
 				Data/Services/ImageLoader.swift,
 				Domain/Entities/ImageData.swift,
@@ -157,6 +163,8 @@
 		9F5C2E192F2CF0BB0099EABC = {
 			isa = PBXGroup;
 			children = (
+				9FF745B52F3232A40029F2B0 /* MovieEntity+CoreDataClass.swift */,
+				9FF745B62F3232A40029F2B0 /* MovieEntity+CoreDataProperties.swift */,
 				9F5C2E242F2CF0BB0099EABC /* MovieFetcher */,
 				9F5C2E3E2F2CF0BD0099EABC /* MovieFetcherTests */,
 				9F5C2E482F2CF0BD0099EABC /* MovieFetcherUITests */,
@@ -319,6 +327,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9FF745B72F3232A40029F2B0 /* MovieEntity+CoreDataClass.swift in Sources */,
+				9FF745B82F3232A40029F2B0 /* MovieEntity+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

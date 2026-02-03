@@ -81,4 +81,76 @@ final class SearchMoviesUseCaseTests: XCTestCase {
             XCTAssertNotNil(error)
         }
     }
+    
+    func testExecute_WhenCacheExists_ReturnsCorrectTotalPages() async throws {
+        let expectedResult = MovieSearchResult(
+            page: 1,
+            results: [MockData.movie],
+            totalPages: 15,
+            totalResults: 150
+        )
+        mockRepository.cachedResult = expectedResult
+        
+        let result = try await sut.execute(query: "test", page: 1)
+        
+        XCTAssertEqual(result.totalPages, 15)
+        XCTAssertEqual(mockRepository.getCachedMoviesCallCount, 1)
+    }
+    
+    func testExecute_WhenRequestSucceeds_CachesTotalPages() async throws {
+        let expectedResult = MovieSearchResult(
+            page: 1,
+            results: [MockData.movie],
+            totalPages: 20,
+            totalResults: 200
+        )
+        mockRepository.searchResult = expectedResult
+        
+        let result = try await sut.execute(query: "test", page: 1)
+        
+        XCTAssertEqual(result.totalPages, 20)
+        XCTAssertEqual(mockRepository.cacheMoviesCallCount, 1)
+    }
+    
+    func testExecute_MultiplePagesWithDifferentTotalPages_CachesCorrectly() async throws {
+        // First page
+        let page1Result = MovieSearchResult(
+            page: 1,
+            results: [MockData.movie],
+            totalPages: 10,
+            totalResults: 100
+        )
+        mockRepository.searchResult = page1Result
+        
+        let result1 = try await sut.execute(query: "test", page: 1)
+        XCTAssertEqual(result1.totalPages, 10)
+        
+        // Second page - totalPages should remain consistent
+        let page2Result = MovieSearchResult(
+            page: 2,
+            results: [MockData.movie],
+            totalPages: 10,
+            totalResults: 100
+        )
+        mockRepository.searchResult = page2Result
+        
+        let result2 = try await sut.execute(query: "test", page: 2)
+        XCTAssertEqual(result2.totalPages, 10)
+        XCTAssertEqual(mockRepository.cacheMoviesCallCount, 2)
+    }
+    
+    func testExecute_RequestFailsWithCachedTotalPages_ReturnsCachedTotalPages() async throws {
+        let cachedResult = MovieSearchResult(
+            page: 1,
+            results: [MockData.movie],
+            totalPages: 25,
+            totalResults: 250
+        )
+        mockRepository.cachedResult = cachedResult
+        mockRepository.shouldThrowError = true
+        
+        let result = try await sut.execute(query: "test", page: 1)
+        
+        XCTAssertEqual(result.totalPages, 25)
+    }
 }

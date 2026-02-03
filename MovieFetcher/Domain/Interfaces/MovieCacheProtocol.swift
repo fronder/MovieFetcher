@@ -8,8 +8,9 @@
 import Foundation
 
 protocol MovieCacheProtocol {
-    func cacheMovies(_ movies: [Movie], query: String, page: Int)
+    func cacheMovies(_ movies: [Movie], query: String, page: Int, totalPages: Int)
     func getCachedMovies(query: String, page: Int) -> [Movie]
+    func getCachedTotalPages(query: String, page: Int) -> Int?
     func addToFavorites(movie: Movie) throws
     func isFavorite(movieId: Int) -> Bool
     func getFavoriteMovies() -> [Movie]

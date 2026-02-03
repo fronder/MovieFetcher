@@ -21,15 +21,18 @@ final class SearchMoviesUseCase: SearchMoviesUseCaseProtocol {
     }
     
     func execute(query: String, page: Int) async throws -> MovieSearchResult {
+        // Check cache first for faster response
         if let cachedResult = cacheRepository.getCachedMovies(query: query, page: page) {
             return cachedResult
         }
         
+        // Fetch from network if not cached
         do {
             let result = try await dataRepository.searchMovies(query: query, page: page)
             cacheRepository.cacheMovies(result: result, query: query)
             return result
         } catch {
+            // Try cache again as fallback on network error
             if let cachedResult = cacheRepository.getCachedMovies(query: query, page: page) {
                 return cachedResult
             }

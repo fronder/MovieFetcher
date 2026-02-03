@@ -2,7 +2,7 @@
 //  MovieEntity+CoreDataProperties.swift
 //  MovieFetcher
 //
-//  Created by Hasan Abdullah on 01/02/26.
+//  Created by Hasan Abdullah on 03/02/26.
 //
 //
 
@@ -18,18 +18,19 @@ extension MovieEntity {
         return NSFetchRequest<MovieEntity>(entityName: "MovieEntity")
     }
 
-    @NSManaged public var id: Int64
-    @NSManaged public var title: String
-    @NSManaged public var overview: String
-    @NSManaged public var posterPath: String?
     @NSManaged public var backdropPath: String?
+    @NSManaged public var cachedDate: Date?
+    @NSManaged public var id: Int64
+    @NSManaged public var overview: String
+    @NSManaged public var page: Int64
+    @NSManaged public var popularity: Double
+    @NSManaged public var posterPath: String?
     @NSManaged public var releaseDate: String
+    @NSManaged public var searchQuery: String?
+    @NSManaged public var title: String
     @NSManaged public var voteAverage: Double
     @NSManaged public var voteCount: Int64
-    @NSManaged public var popularity: Double
-    @NSManaged public var searchQuery: String?
-    @NSManaged public var cachedDate: Date?
-    @NSManaged public var page: Int64
+    @NSManaged public var totalPages: Int64
 
     func toMovie() -> Movie {
         return Movie(
