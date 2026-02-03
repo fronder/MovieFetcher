@@ -44,4 +44,15 @@ final class FavoritesViewControllerTests: XCTestCase {
         
         XCTAssertEqual(mockManageFavoritesUseCase.getFavoritesCallCount, 1)
     }
+    
+    func testTableView_NumberOfRows_ReturnsCorrectCount() {
+        mockManageFavoritesUseCase.favoriteMovies = MockData.movies
+        sut.loadViewIfNeeded()
+        mockViewModel.loadFavorites()
+        
+        let tableView = sut.view.subviews.compactMap { $0 as? UITableView }.first
+        let numberOfRows = sut.tableView(tableView!, numberOfRowsInSection: 0)
+        
+        XCTAssertEqual(numberOfRows, 2)
+    }
 }
