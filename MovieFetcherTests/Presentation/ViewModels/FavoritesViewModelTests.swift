@@ -88,4 +88,38 @@ final class FavoritesViewModelTests: XCTestCase {
         
         XCTAssertEqual(mockManageFavoritesUseCase.getFavoritesCallCount, initialCallCount)
     }
+    
+    func testFavoriteMovies_IsPublished() {
+        let expectation = XCTestExpectation(description: "favoriteMovies published")
+        mockManageFavoritesUseCase.favoriteMovies = MockData.movies
+        
+        sut.$favoriteMovies
+            .dropFirst()
+            .sink { movies in
+                XCTAssertEqual(movies.count, 2)
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+        
+        sut.loadFavorites()
+        
+        wait(for: [expectation], timeout: 1.0)
+    }
+    
+    func testErrorMessage_IsPublished() {
+        let expectation = XCTestExpectation(description: "errorMessage published")
+        mockManageFavoritesUseCase.shouldThrowError = true
+        
+        sut.$errorMessage
+            .dropFirst()
+            .sink { errorMessage in
+                XCTAssertNotNil(errorMessage)
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+        
+        sut.removeFromFavorites(movieId: 1)
+        
+        wait(for: [expectation], timeout: 1.0)
+    }
 }
