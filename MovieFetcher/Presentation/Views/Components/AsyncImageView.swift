@@ -66,7 +66,7 @@ final class AsyncImageView: UIView {
         ])
     }
     
-    func loadImage(from url: URL?, imageLoader: ImageLoaderProtocol) {
+    func loadImage(from url: URL?, imageLoader: ImageLoader) {
         currentTask?.cancel()
         imageView.image = nil
         placeholderImageView.isHidden = false

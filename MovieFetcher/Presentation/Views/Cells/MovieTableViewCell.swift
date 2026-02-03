@@ -58,7 +58,7 @@ final class MovieTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with movie: Movie, isFavorite: Bool, imageLoader: ImageLoaderProtocol) {
+    func configure(with movie: Movie, isFavorite: Bool, imageLoader: ImageLoader) {
         titleLabel.text = movie.title
         releaseDateLabel.text = movie.formattedReleaseDate
         ratingLabel.text = "⭐️ \(String(format: "%.1f", movie.voteAverage))"

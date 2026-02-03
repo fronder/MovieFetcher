@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ImageLoader: ImageLoaderProtocol {
+actor ImageLoader {
     static let shared = ImageLoader()
     
     private let cache = NSCache<NSURL, NSData>()
@@ -39,7 +39,8 @@ final class ImageLoader: ImageLoaderProtocol {
             
             let imageData = ImageData(data: data, url: url)
             cache.setObject(data as NSData, forKey: url as NSURL)
-            runningTasks[url] = nil
+            
+            self.removeTask(for: url)
             
             return imageData
         }
@@ -50,6 +51,10 @@ final class ImageLoader: ImageLoaderProtocol {
     
     func cancelLoad(for url: URL) {
         runningTasks[url]?.cancel()
+        runningTasks[url] = nil
+    }
+    
+    private func removeTask(for url: URL) {
         runningTasks[url] = nil
     }
 }
