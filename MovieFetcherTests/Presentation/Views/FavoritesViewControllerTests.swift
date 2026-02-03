@@ -89,4 +89,22 @@ final class FavoritesViewControllerTests: XCTestCase {
         
         XCTAssertNoThrow(sut.tableView(tableView, didSelectRowAt: indexPath))
     }
+    
+    func testTableView_DidSelectRow_PassesCorrectMovie() {
+        mockManageFavoritesUseCase.favoriteMovies = MockData.movies
+        sut.loadViewIfNeeded()
+        mockViewModel.loadFavorites()
+        
+        var tappedMovie: Movie?
+        sut.onMovieTap = { movie in
+            tappedMovie = movie
+        }
+        
+        let tableView = sut.view.subviews.compactMap { $0 as? UITableView }.first!
+        let indexPath = IndexPath(row: 1, section: 0)
+        sut.tableView(tableView, didSelectRowAt: indexPath)
+        
+        XCTAssertEqual(tappedMovie?.id, MockData.movies[1].id)
+        XCTAssertEqual(tappedMovie?.title, MockData.movies[1].title)
+    }
 }
