@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Movie: Equatable, Codable, Hashable, @unchecked Sendable {
+struct Movie: Codable, @unchecked Sendable {
     let id: Int
     let title: String
     let overview: String
@@ -34,5 +34,16 @@ struct Movie: Equatable, Codable, Hashable, @unchecked Sendable {
         guard let date = dateFormatter.date(from: releaseDate) else { return releaseDate }
         dateFormatter.dateFormat = "MMM dd, yyyy"
         return dateFormatter.string(from: date)
+    }
+}
+
+// MARK: - Hashable & Equatable
+extension Movie: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: Movie, rhs: Movie) -> Bool {
+        lhs.id == rhs.id
     }
 }
