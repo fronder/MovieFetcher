@@ -38,4 +38,13 @@ final class FavoritesViewModelTests: XCTestCase {
         XCTAssertEqual(sut.favoriteMovies.count, 2)
         XCTAssertEqual(mockManageFavoritesUseCase.getFavoritesCallCount, 1)
     }
+    
+    func testLoadFavorites_WhenEmpty_ReturnsEmptyArray() {
+        mockManageFavoritesUseCase.favoriteMovies = []
+        
+        sut.loadFavorites()
+        
+        XCTAssertEqual(sut.favoriteMovies.count, 0)
+        XCTAssertEqual(mockManageFavoritesUseCase.getFavoritesCallCount, 1)
+    }
 }
