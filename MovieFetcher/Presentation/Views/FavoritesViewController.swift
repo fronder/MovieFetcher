@@ -88,7 +88,9 @@ extension FavoritesViewController: UITableViewDataSource {
 
 extension FavoritesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        tableView.deselectRow(at: indexPath, animated: true)
+        let movie = viewModel.favoriteMovies[indexPath.row]
+        onMovieTap?(movie)
     }
 }
 

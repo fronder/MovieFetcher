@@ -58,6 +58,9 @@ final class AppCoordinator: Coordinator {
         let viewModel = FavoritesViewModel(manageFavoritesUseCase: dependencyContainer.makeManageFavoritesUseCase())
         
         let viewController = FavoritesViewController(viewModel: viewModel)
+        viewController.onMovieTap = { [weak self] movie in
+            self?.showMovieDetail(movie: movie)
+        }
         
         navigationController.pushViewController(viewController, animated: true)
     }
