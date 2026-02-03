@@ -8,7 +8,7 @@
 import Foundation
 @testable import MovieFetcher
 
-final class MockMovieRepository: MovieDataRepositoryProtocol, MovieCacheRepositoryProtocol, FavoritesRepositoryProtocol {
+final class MockMovieRepository: MovieRepositoryProtocol {
     var searchResult: MovieSearchResult?
     var cachedResult: MovieSearchResult?
     var shouldThrowError = false
