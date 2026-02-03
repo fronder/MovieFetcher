@@ -143,7 +143,7 @@ extension MovieSearchViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let lastIndex = viewModel.movies.count - 1
+        let lastIndex = viewModel.movies.count - 6
         if indexPath.row == lastIndex && viewModel.hasMorePages {
             Task {
                 await viewModel.loadMoreMovies()
