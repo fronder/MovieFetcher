@@ -8,6 +8,7 @@ A native iOS application for searching and discovering movies using The Movie Da
 - **Movie Search**: Search for movies by title with real-time results
 - **Two-Screen Interface**: Search screen and detailed movie information screen
 - **Rich Movie Display**: Shows movie posters, titles, release dates, and overviews
+- **Favorites Management**: Save and manage favorite movies with persistent storage
 - **Offline Caching**: Automatically caches search results for offline access
 - **Pagination**: Infinite scroll to load more search results
 - **Error Handling**: Graceful error handling with user-friendly feedback
@@ -126,8 +127,8 @@ A native iOS application for searching and discovering movies using The Movie Da
 
 #### 1. Domain Layer
 - **Entities**: `Movie`, `MovieSearchResult`
-- **Use Cases**: `SearchMoviesUseCase`
-- **Protocols**: `MovieRepositoryProtocol`, `MovieCacheProtocol`
+- **Use Cases**: `SearchMoviesUseCase`, `ManageFavoritesUseCase`
+- **Protocols**: `MovieRepositoryProtocol`, `MovieCacheProtocol`, `FavoritesRepositoryProtocol`
 
 #### 2. Data Layer
 - **Repository**: `MovieRepository` (implements `MovieRepositoryProtocol`)
@@ -136,8 +137,8 @@ A native iOS application for searching and discovering movies using The Movie Da
 - **Persistence**: `MovieEntity` (Core Data model)
 
 #### 3. Presentation Layer
-- **ViewModels**: `MovieSearchViewModel`, `MovieDetailViewModel`
-- **Views**: `MovieSearchViewController`, `MovieDetailViewController`
+- **ViewModels**: `MovieSearchViewModel`, `MovieDetailViewModel`, `FavoritesViewModel`
+- **Views**: `MovieSearchViewController`, `MovieDetailViewController`, `FavoritesViewController`
 - **Cells**: `MovieTableViewCell`
 - **Coordinators**: `AppCoordinator`
 
@@ -184,8 +185,8 @@ open MovieFetcher.xcodeproj
 ### Unit Tests
 The project includes comprehensive unit tests for:
 - `MovieRepository`: Network and cache integration
-- Use Cases: Business logic validation
-- ViewModels: Presentation logic
+- Use Cases: Business logic validation (`SearchMoviesUseCase`, `ManageFavoritesUseCase`)
+- ViewModels: Presentation logic (`MovieSearchViewModel`, `FavoritesViewModel`)
 
 Run unit tests:
 ```bash
@@ -298,8 +299,10 @@ This project uses only native iOS frameworks - no third-party dependencies requi
 
 ## Future Enhancements
 
+### Completed Features
+- ✅ **Favorites List**: Save and manage favorite movies with Core Data persistence
+
 ### Potential Features
-- ⭐ **Favorites List**: Save and manage favorite movies
 - 🎬 **Movie Trailers**: Watch trailers within the app
 - 🔔 **Notifications**: Alerts for new releases
 - 🌙 **Dark Mode**: Enhanced dark mode support
