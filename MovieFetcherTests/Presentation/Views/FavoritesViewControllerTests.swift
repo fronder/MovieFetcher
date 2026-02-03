@@ -45,55 +45,70 @@ final class FavoritesViewControllerTests: XCTestCase {
         XCTAssertEqual(mockManageFavoritesUseCase.getFavoritesCallCount, 1)
     }
     
-    func testTableView_NumberOfRows_ReturnsCorrectCount() {
+    func testTableView_NumberOfRows_ReturnsCorrectCount() async {
         mockManageFavoritesUseCase.favoriteMovies = MockData.movies
         sut.loadViewIfNeeded()
         mockViewModel.loadFavorites()
         
+        // Wait for the Combine publisher to update
+        try? await Task.sleep(nanoseconds: 100_000_000)
+        
         let tableView = sut.view.subviews.compactMap { $0 as? UITableView }.first
-        let numberOfRows = sut.tableView(tableView!, numberOfRowsInSection: 0)
+        let numberOfRows = tableView?.numberOfRows(inSection: 0)
         
         XCTAssertEqual(numberOfRows, 2)
     }
     
-    func testTableView_NumberOfRows_WhenEmpty_ReturnsZero() {
+    func testTableView_NumberOfRows_WhenEmpty_ReturnsZero() async {
         mockManageFavoritesUseCase.favoriteMovies = []
         sut.loadViewIfNeeded()
         mockViewModel.loadFavorites()
         
+        // Wait for the Combine publisher to update
+        try? await Task.sleep(nanoseconds: 100_000_000)
+        
         let tableView = sut.view.subviews.compactMap { $0 as? UITableView }.first
-        let numberOfRows = sut.tableView(tableView!, numberOfRowsInSection: 0)
+        let numberOfRows = tableView?.numberOfRows(inSection: 0)
         
         XCTAssertEqual(numberOfRows, 0)
     }
     
-    func testTableView_CellForRowAt_ConfiguresCell() {
+    func testTableView_CellForRowAt_ConfiguresCell() async {
         mockManageFavoritesUseCase.favoriteMovies = MockData.movies
         sut.loadViewIfNeeded()
         mockViewModel.loadFavorites()
         
+        // Wait for the Combine publisher to update
+        try? await Task.sleep(nanoseconds: 100_000_000)
+        
         let tableView = sut.view.subviews.compactMap { $0 as? UITableView }.first!
         let indexPath = IndexPath(row: 0, section: 0)
-        let cell = sut.tableView(tableView, cellForRowAt: indexPath)
+        let cell = tableView.cellForRow(at: indexPath)
         
         XCTAssertTrue(cell is MovieTableViewCell)
     }
     
-    func testOnMovieTap_WhenNotSet_DoesNotCrash() {
+    func testOnMovieTap_WhenNotSet_DoesNotCrash() async {
         mockManageFavoritesUseCase.favoriteMovies = MockData.movies
         sut.loadViewIfNeeded()
         mockViewModel.loadFavorites()
+        
+        // Wait for the Combine publisher to update
+        try? await Task.sleep(nanoseconds: 100_000_000)
         
         let tableView = sut.view.subviews.compactMap { $0 as? UITableView }.first!
         let indexPath = IndexPath(row: 0, section: 0)
         
-        XCTAssertNoThrow(sut.tableView(tableView, didSelectRowAt: indexPath))
+        XCTAssertNoThrow(tableView.delegate?.tableView?(tableView, didSelectRowAt: indexPath))
     }
     
-    func testTableView_DidSelectRow_PassesCorrectMovie() {
+    func testTableView_DidSelectRow_PassesCorrectMovie() async {
         mockManageFavoritesUseCase.favoriteMovies = MockData.movies
         sut.loadViewIfNeeded()
         mockViewModel.loadFavorites()
+        
+        // Wait for the Combine publisher to update
+        try? await Task.sleep(nanoseconds: 100_000_000)
         
         var tappedMovie: Movie?
         sut.onMovieTap = { movie in
@@ -102,9 +117,10 @@ final class FavoritesViewControllerTests: XCTestCase {
         
         let tableView = sut.view.subviews.compactMap { $0 as? UITableView }.first!
         let indexPath = IndexPath(row: 1, section: 0)
-        sut.tableView(tableView, didSelectRowAt: indexPath)
+        tableView.delegate?.tableView?(tableView, didSelectRowAt: indexPath)
         
         XCTAssertEqual(tappedMovie?.id, MockData.movies[1].id)
         XCTAssertEqual(tappedMovie?.title, MockData.movies[1].title)
     }
 }
+

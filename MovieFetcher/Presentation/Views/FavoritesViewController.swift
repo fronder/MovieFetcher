@@ -12,10 +12,11 @@ final class FavoritesViewController: UIViewController {
     private let viewModel: FavoritesViewModel
     private var cancellables = Set<AnyCancellable>()
     
+    private var dataSource: UITableViewDiffableDataSource<Int, Movie>!
+    
     private lazy var tableView: UITableView = {
         let table = UITableView()
         table.register(MovieTableViewCell.self, forCellReuseIdentifier: MovieTableViewCell.identifier)
-        table.dataSource = self
         table.delegate = self
         table.rowHeight = UITableView.automaticDimension
         table.estimatedRowHeight = 144
@@ -47,6 +48,7 @@ final class FavoritesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        configureDataSource()
         bindViewModel()
     }
     
@@ -55,41 +57,44 @@ final class FavoritesViewController: UIViewController {
         viewModel.loadFavorites()
     }
     
+    private func configureDataSource() {
+        dataSource = UITableViewDiffableDataSource<Int, Movie>(tableView: tableView) { [weak self] tableView, indexPath, movie in
+            guard let self = self,
+                  let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.identifier, for: indexPath) as? MovieTableViewCell else {
+                return UITableViewCell()
+            }
+            
+            cell.configure(with: movie, isFavorite: true, imageLoader: ImageLoader.shared)
+            cell.onFavoriteToggle = { [weak self] in
+                self?.viewModel.removeFromFavorites(movieId: movie.id)
+            }
+            
+            return cell
+        }
+    }
+    
+    private func updateSnapshot(animatingDifferences: Bool = false) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, Movie>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(viewModel.favoriteMovies)
+        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
+    }
+    
     private func bindViewModel() {
         viewModel.$favoriteMovies
             .receive(on: DispatchQueue.main)
             .sink { [weak self] movies in
-                self?.tableView.reloadData()
+                self?.updateSnapshot()
                 self?.emptyStateLabel.isHidden = !movies.isEmpty
             }
             .store(in: &cancellables)
     }
 }
 
-extension FavoritesViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.favoriteMovies.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.identifier, for: indexPath) as? MovieTableViewCell else {
-            return UITableViewCell()
-        }
-        
-        let movie = viewModel.favoriteMovies[indexPath.row]
-        cell.configure(with: movie, isFavorite: true, imageLoader: ImageLoader.shared)
-        cell.onFavoriteToggle = { [weak self] in
-            self?.viewModel.removeFromFavorites(movieId: movie.id)
-        }
-        
-        return cell
-    }
-}
-
 extension FavoritesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let movie = viewModel.favoriteMovies[indexPath.row]
+        guard let movie = dataSource.itemIdentifier(for: indexPath) else { return }
         onMovieTap?(movie)
     }
 }
