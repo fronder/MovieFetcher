@@ -69,4 +69,14 @@ final class FavoritesViewModelTests: XCTestCase {
         XCTAssertEqual(sut.favoriteMovies.count, 1)
         XCTAssertFalse(sut.favoriteMovies.contains { $0.id == MockData.movie.id })
     }
+    
+    func testRemoveFromFavorites_WhenError_SetsErrorMessage() {
+        mockManageFavoritesUseCase.shouldThrowError = true
+        
+        sut.removeFromFavorites(movieId: 1)
+        
+        XCTAssertNotNil(sut.errorMessage)
+        XCTAssertTrue(sut.errorMessage?.contains("Failed to remove from favorites") ?? false)
+        XCTAssertEqual(mockManageFavoritesUseCase.removeFromFavoritesCallCount, 1)
+    }
 }
