@@ -14,10 +14,11 @@ final class MovieSearchViewModelTests: XCTestCase {
     var mockSearchUseCase: MockSearchMoviesUseCase!
     var mockFavoritesUseCase: MockManageFavoritesUseCase!
     var cancellables: Set<AnyCancellable>!
-
+    
     override func setUp() {
         super.setUp()
         mockSearchUseCase = MockSearchMoviesUseCase()
+        mockFavoritesUseCase = MockManageFavoritesUseCase()
         cancellables = Set<AnyCancellable>()
         
         sut = MovieSearchViewModel(
@@ -28,7 +29,6 @@ final class MovieSearchViewModelTests: XCTestCase {
     
     override func tearDown() {
         sut = nil
-        mockSearchUseCase = nil
         cancellables = nil
         super.tearDown()
     }
