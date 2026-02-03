@@ -79,4 +79,13 @@ final class FavoritesViewModelTests: XCTestCase {
         XCTAssertTrue(sut.errorMessage?.contains("Failed to remove from favorites") ?? false)
         XCTAssertEqual(mockManageFavoritesUseCase.removeFromFavoritesCallCount, 1)
     }
+    
+    func testRemoveFromFavorites_WhenError_DoesNotReloadFavorites() {
+        mockManageFavoritesUseCase.shouldThrowError = true
+        let initialCallCount = mockManageFavoritesUseCase.getFavoritesCallCount
+        
+        sut.removeFromFavorites(movieId: 1)
+        
+        XCTAssertEqual(mockManageFavoritesUseCase.getFavoritesCallCount, initialCallCount)
+    }
 }
