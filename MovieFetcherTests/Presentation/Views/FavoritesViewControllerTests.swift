@@ -66,4 +66,16 @@ final class FavoritesViewControllerTests: XCTestCase {
         
         XCTAssertEqual(numberOfRows, 0)
     }
+    
+    func testTableView_CellForRowAt_ConfiguresCell() {
+        mockManageFavoritesUseCase.favoriteMovies = MockData.movies
+        sut.loadViewIfNeeded()
+        mockViewModel.loadFavorites()
+        
+        let tableView = sut.view.subviews.compactMap { $0 as? UITableView }.first!
+        let indexPath = IndexPath(row: 0, section: 0)
+        let cell = sut.tableView(tableView, cellForRowAt: indexPath)
+        
+        XCTAssertTrue(cell is MovieTableViewCell)
+    }
 }
