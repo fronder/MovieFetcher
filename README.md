@@ -233,59 +233,6 @@ All errors are presented to users via alerts with clear messages.
 3. **Data Efficiency**: Reduces API calls and bandwidth usage
 4. **User Experience**: Seamless transition between online/offline modes
 
-## Project Structure
-
-```
-MovieFetcher/
-├── Application/
-│   └── DependencyContainer.swift
-├── Domain/
-│   ├── Entities/
-│   │   ├── Movie.swift
-│   │   └── MovieSearchResult.swift
-│   ├── Interfaces/
-│   │   ├── MovieRepositoryProtocol.swift
-│   │   └── MovieCacheProtocol.swift
-│   └── UseCases/
-│       └── SearchMoviesUseCase.swift
-├── Data/
-│   ├── Network/
-│   │   ├── NetworkService.swift
-│   │   ├── NetworkError.swift
-│   │   ├── APIEndpoint.swift
-│   │   └── APIConfiguration.swift
-│   ├── Persistence/
-│   │   ├── Cache/
-│   │   │   ├── CoreDataMovieCache.swift
-│   │   │   └── Manager/
-│   │   │       └── CoreDataManager.swift
-│   │   └── Entities/
-│   │       ├── MovieEntity+CoreDataClass.swift
-│   │       └── MovieEntity+CoreDataProperties.swift
-│   ├── Repositories/
-│   │   └── MovieRepository.swift
-│   └── Services/
-│       └── ImageLoader.swift
-├── Presentation/
-│   ├── ViewModels/
-│   │   ├── MovieSearchViewModel.swift
-│   │   └── MovieDetailViewModel.swift
-│   ├── Views/
-│   │   ├── MovieSearchViewController.swift
-│   │   ├── MovieDetailViewController.swift
-│   │   └── Cells/
-│   │       └── MovieTableViewCell.swift
-│   ├── Coordinators/
-│   │   ├── Coordinator.swift
-│   │   └── AppCoordinator.swift
-│   └── Adapters/
-│       └── ImageDataAdapter.swift
-└── Resources/
-    ├── MovieFetcher.xcdatamodeld
-    ├── AppDelegate.swift
-    └── SceneDelegate.swift
-```
-
 ## Dependencies
 
 ### Native Frameworks
