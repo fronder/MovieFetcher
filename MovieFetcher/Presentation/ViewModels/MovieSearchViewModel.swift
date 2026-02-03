@@ -18,6 +18,7 @@ final class MovieSearchViewModel: ObservableObject {
     private var currentPage = 1
     private var totalPages = 1
     private var currentSearchQuery = ""
+    private var movieIds = Set<Int>() // Track IDs for O(1) duplicate checking
     
     private let searchMoviesUseCase: SearchMoviesUseCaseProtocol
     private let manageFavoritesUseCase: ManageFavoritesUseCaseProtocol
@@ -71,8 +72,13 @@ final class MovieSearchViewModel: ObservableObject {
                 if !Task.isCancelled {
                     if resetResults {
                         movies = result.results
+                        movieIds = Set(result.results.map { $0.id })
                     } else {
-                        movies.append(contentsOf: result.results)
+                        // Filter out duplicates using cached Set - O(1) lookup
+                        let newMovies = result.results.filter { !movieIds.contains($0.id) }
+                        movies.append(contentsOf: newMovies)
+                        // Update the Set with new IDs
+                        newMovies.forEach { movieIds.insert($0.id) }
                     }
                     totalPages = result.totalPages
                     hasMorePages = currentPage < totalPages
