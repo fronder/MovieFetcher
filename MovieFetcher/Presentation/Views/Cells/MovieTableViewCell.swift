@@ -80,10 +80,13 @@ final class MovieTableViewCell: UITableViewCell {
         
         favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
         
+        let bottomConstraint = posterImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12)
+        bottomConstraint.priority = UILayoutPriority(rawValue: 999)
+        
         NSLayoutConstraint.activate([
             posterImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             posterImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
-            posterImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+            bottomConstraint,
             posterImageView.widthAnchor.constraint(equalToConstant: 80),
             posterImageView.heightAnchor.constraint(equalToConstant: 120),
             
@@ -98,6 +101,7 @@ final class MovieTableViewCell: UITableViewCell {
             ratingLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             ratingLabel.topAnchor.constraint(equalTo: releaseDateLabel.bottomAnchor, constant: 8),
             ratingLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            ratingLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -12),
             
             favoriteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             favoriteButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
