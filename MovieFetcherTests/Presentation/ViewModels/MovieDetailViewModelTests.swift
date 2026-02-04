@@ -118,4 +118,66 @@ final class MovieDetailViewModelTests: XCTestCase {
         sut.toggleFavorite()
         XCTAssertTrue(sut.isFavorite)
     }
+    
+    func testIsFavorite_IsPublished() async {
+        let expectation = XCTestExpectation(description: "isFavorite publishes changes")
+        var receivedValues: [Bool] = []
+        
+        sut.$isFavorite
+            .sink { value in
+                receivedValues.append(value)
+                if receivedValues.count == 2 {
+                    expectation.fulfill()
+                }
+            }
+            .store(in: &cancellables)
+        
+        mockManageFavoritesUseCase.favoriteMovies = [testMovie]
+        sut.toggleFavorite()
+        
+        await fulfillment(of: [expectation], timeout: 1.0)
+        XCTAssertEqual(receivedValues.count, 2)
+        XCTAssertFalse(receivedValues[0])
+        XCTAssertTrue(receivedValues[1])
+    }
+    
+    func testErrorMessage_IsPublished() async {
+        let expectation = XCTestExpectation(description: "errorMessage publishes changes")
+        var receivedValues: [String?] = []
+        
+        sut.$errorMessage
+            .sink { value in
+                receivedValues.append(value)
+                if receivedValues.count == 2 {
+                    expectation.fulfill()
+                }
+            }
+            .store(in: &cancellables)
+        
+        mockManageFavoritesUseCase.shouldThrowError = true
+        sut.toggleFavorite()
+        
+        await fulfillment(of: [expectation], timeout: 1.0)
+        XCTAssertEqual(receivedValues.count, 2)
+        XCTAssertNil(receivedValues[0])
+        XCTAssertNotNil(receivedValues[1])
+    }
+    
+    func testToggleFavorite_WithDifferentMovie_DoesNotAffectCurrentMovie() {
+        let anotherMovie = Movie(
+            id: 999,
+            title: "Another Movie",
+            overview: "Another overview",
+            posterPath: nil,
+            backdropPath: nil,
+            releaseDate: "2024-01-01",
+            voteAverage: 7.0,
+            voteCount: 100,
+            popularity: 50.0
+        )
+        
+        mockManageFavoritesUseCase.favoriteMovies = [anotherMovie]
+        
+        XCTAssertFalse(sut.isFavorite)
+    }
 }
